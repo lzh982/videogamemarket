@@ -4,7 +4,11 @@ import json
 from epicstore_api import EpicGamesStoreAPI
 from datetime import datetime
 from operator import itemgetter 
-  
+from api_function.bestbuy import bestbuy_request
+from api_function.walmart import walmart_request
+
+
+
 app = Flask(__name__)
 
 @app.route('/',methods = ['GET','POST'])
@@ -147,8 +151,18 @@ def index():
         
         }
         games_list.append(game_data)
+
+
+    #walmart API
+    if q:
+        walmart_data = walmart_request(q)
+        games_list+=walmart_data
+
+
+
     #----------------------------------------------
-    games_list.sort(key=itemgetter("price"))
+    #games_list.sort(key=itemgetter("price"))
+
     #games_list = sorted(games_list, key = lambda i: i['price'])
     #Implements Search Functionality
     for i in games_list:
