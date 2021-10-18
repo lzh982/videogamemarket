@@ -154,11 +154,14 @@ def index():
 
 
     #walmart API
+    ##if q:
+        ##walmart_data = walmart_request(q)
+        ##games_list+=walmart_data
+
+    #best buy API
     if q:
-        walmart_data = walmart_request(q)
-        games_list+=walmart_data
-
-
+        bestbuy_data = bestbuy_request(q)
+        games_list+=bestbuy_data
 
     #----------------------------------------------
     #games_list.sort(key=itemgetter("price"))

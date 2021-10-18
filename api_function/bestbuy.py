@@ -11,13 +11,13 @@ def bestbuy_request(query):
 
         game_data = {
             'title': i['name'],
-            'price': i['salePrice'],
-            'initialprice': i['regularPrice'],
-            'discount' : i['salePrice'],
+            'price': i['regularPrice'],
+            'initialprice': i['salePrice'],
+            'discount' : "some discount",
             'store': 'Bestbuy',
             # 'seller': i['seller_name'],
             'link': i['url'],
-            'thumbnail': i["images"][0],
+            'thumbnail': i["images"][0]['href'],
             'rating': i['customerReviewAverage'],
             'reviews': i['customerReviewCount'],
         }
@@ -26,4 +26,4 @@ def bestbuy_request(query):
     return game_result
 
 
-print(bestbuy_request("zelda"))
+#print(bestbuy_request("zelda"))
