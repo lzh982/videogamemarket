@@ -28,6 +28,10 @@
       .align-right {
         margin-right: 20px;
       }
+      img{
+        max-height: 175px;
+        width: auto;
+      }
     </style>
     <!-- Custom styles for this template -->
     <link href="{{ url_for('static', filename='album.css') }}" rel="stylesheet">
@@ -61,7 +65,7 @@
         <div class="col-md-4">
           <div class="card mb-4 shadow-sm">
             <div class="card-body">
-              <center><img src={{game.thumbnail}} alt={{game.title}} width="310" height="175"></center>
+              <center><img src={{game.thumbnail}} alt={{game.title}} ></center>
               <p></p>
               <h5><b class="card-text">{{ game.title}}</b></h5>
               <b class="card-text">Price: ${{game.price}}</b>
