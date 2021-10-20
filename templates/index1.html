@@ -34,8 +34,11 @@
         width: auto;
       }
     </style>
+
     <!-- Custom styles for this template -->
     <link href="{{ url_for('static', filename='album.css') }}" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/01b1163e8f.js" crossorigin="anonymous"></script>
+
   </head>
   <body>
 
@@ -44,7 +47,13 @@
   <a class = "btn btn-primary my-2" style="float: right;" href= "https://find-game-prices-low-data.herokuapp.com/" >Click here to go to Low Data Mode</a> </p>
   </div>
   <section class="jumbotron text-center">
+
+      <i class="fab fa-playstation" fa-5x></i>
+      <i class="fab fa-steam" fa-5x></i>
+      <i class="fab fa-xbox" fa-5x></i>
     <div class="container">
+
+
       <h1 class="jumbotron-heading">Search Games Across Different Stores</h1>
       <p class="lead text-muted">Get the lowest prices for your searched game</p>
       <form method="GET">
