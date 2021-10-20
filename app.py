@@ -154,9 +154,9 @@ def index():
 
 
     #walmart API
-    ##if q:
-        ##walmart_data = walmart_request(q)
-        ##games_list+=walmart_data
+    if q:
+        walmart_data = walmart_request(q)
+        games_list+=walmart_data
 
     #best buy API
     if q:
@@ -164,7 +164,7 @@ def index():
         games_list+=bestbuy_data
 
     #----------------------------------------------
-    #games_list.sort(key=itemgetter("price"))
+    games_list.sort(key=itemgetter("price"))
 
     #games_list = sorted(games_list, key = lambda i: i['price'])
     #Implements Search Functionality
