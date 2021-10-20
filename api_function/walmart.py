@@ -8,8 +8,10 @@ def walmart_request(input):
     print("Making walmart request ")
     walmart_query = "query="+ input
     walmart_api_key="api_key=3b705cb08c85be188ac32c5e2f7a78b82269ec708d1da48a8c318e4630ac39d4"
-    walmart_request_url = "https://serpapi.com/search.json?engine=walmart&"+walmart_query+"&"+walmart_api_key
+    walmart_cat_id = "cat_id=2636"
 
+
+    walmart_request_url = "https://serpapi.com/search.json?engine=walmart&"+walmart_query+"&"+walmart_cat_id+"&"+walmart_api_key
     walmart_response = requests.get(walmart_request_url).json()
     walmart_result = []
     #limit ten results
