@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, redirect
+import hashlib
+
+from flask import Flask, render_template, request, redirect, jsonify
 import requests
 import json
 from epicstore_api import EpicGamesStoreAPI
@@ -183,5 +185,17 @@ def index():
 
 @app.route('/ebaytestnotification',methods = ['GET','POST'])
 def ebaytestnotification():
-    print(request.args)
-    return render_template('ebay_notification.html',response= request.args)
+    challengeCode = request.args.get("challenge_code")
+    verificationToken = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    endpoint = "https://video-market-search.herokuapp.com/ebaytestnotification"
+    string_to_hash = challengeCode + verificationToken + endpoint
+    m = hashlib.sha256(str(string_to_hash).encode('utf-8'))
+    print(m.hexdigest())
+
+    return jsonify(
+        challengeResponse=m.hexdigest(),
+    #    status=200,
+    #    mimetype='application/json'
+    )
+
+    #return render_template('ebay_notification.html',response= m.hexdigest())
