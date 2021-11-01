@@ -1,25 +1,23 @@
-import hashlib
-
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect
 import requests
 import json
 from epicstore_api import EpicGamesStoreAPI
 from datetime import datetime
-from operator import itemgetter 
+from operator import itemgetter
 from api_function.bestbuy import bestbuy_request
 from api_function.walmart import walmart_request
-
+import harperdb
 
 
 app = Flask(__name__)
 
 @app.route('/',methods = ['GET','POST'])
 def index():
-    
+
     games_list = []
     #Parameters for Steam API
     parameters = {"request": "all"}
-    
+
     #Stores user search input in q
     q = request.args.get('query')
     if type(q) != str:
@@ -30,10 +28,10 @@ def index():
 
     #GOG API URL
     url = "https://embed.gog.com/games/ajax/filtered?mediaType=game&search="+q
-    
-    #Steam API Response      
+
+    #Steam API Response
     steam_response = requests.get(url=req,params = parameters)
-    
+
     #GOG API Response
     gog_response = requests.get(url=url)
 
@@ -45,7 +43,7 @@ def index():
     presentiso = datetime.now()
     present = presentiso.strftime("%Y-%m-%d")
 
-    #Calls EPIC API   
+    #Calls EPIC API
     api = EpicGamesStoreAPI()
 
     #Retrieves endpoint for games in EPIC store
@@ -62,18 +60,18 @@ def index():
         with_price = True
     )['data']['Catalog']['searchStore']['elements']
     endpoint = " "
-    
+
     for game in epic_games:
         game_name = game['title']
         game_thumbnail = None
         game_namespace = game['namespace']
 
-        #Retrieves url for thumbnail 
+        #Retrieves url for thumbnail
         for image in game['keyImages']:
             if image['type'] == 'OfferImageWide':
                 game_thumbnail = image['url']
-        
-        
+
+
         game_oprice = game['price']['totalPrice']['fmtPrice']['originalPrice']
         game_oprice = game_oprice.replace('$','')
         game_dprice = game['price']['totalPrice']['fmtPrice']['discountPrice']
@@ -88,25 +86,25 @@ def index():
         except ZeroDivisionError:
             discount = 0
 
-        #Creating URL for EPIC store games 
+        #Creating URL for EPIC store games
         try:
             if game_namespace in slug_dict:
                 game_slug = slug_dict[game_namespace]
                 epic_url = "https://www.epicgames.com/store/en-US/p/" + game_slug
-            #If not in slug_dict, then assume it is a bundle 
+            #If not in slug_dict, then assume it is a bundle
             else:
                 #Replaces spaces with hyphens
                 endpoint = game_name.replace(" ","-").lower()
                 #Removes Trademark Symbol (if present)
                 endpoint = endpoint.replace(u"\u2122", '')
                 epic_url = "https://www.epicgames.com/store/en-US/bundles/" + endpoint
-              
+
         except:
             #If link not found, redirects to home page of EPIC games
             epic_url = "https://www.epicgames.com/store/en-US/"
-        
 
-        
+
+
         game_data = {
             'title': game_name,
             'price': game_dprice,
@@ -114,7 +112,7 @@ def index():
             'discount' : discount,
             'store' : 'Epic Games',
             'link' : epic_url,
-            'thumbnail' : game_thumbnail        
+            'thumbnail' : game_thumbnail
         }
 
         games_list.append(game_data)
@@ -122,7 +120,7 @@ def index():
 
     #GOG API---------------------------------------
     for i in gog_games['products']:
-        
+
         game_data = {
             'title' : i['title'],
             'price' : float(i['price']['amount']),
@@ -150,7 +148,7 @@ def index():
             'store' : 'Steam',
             'link' : ("https://store.steampowered.com/app/" + str(steam_games[i]['appid'])),
             'thumbnail' : ('https://cdn.cloudflare.steamstatic.com/steam/apps/' + str(steam_games[i]['appid']) + '/header.jpg')
-        
+
         }
         games_list.append(game_data)
 
@@ -165,6 +163,29 @@ def index():
         bestbuy_data = bestbuy_request(q)
         games_list+=bestbuy_data
 
+
+    db = harperdb.HarperDB(
+        url="https://videogames-videomarket.harperdbcloud.com",
+        username="video_game_market",
+        password="video_game_market"
+    )
+
+    if __name__ == "__main__":
+        #print(db.describe_all())
+        database_games = db.sql("select * from video_game.video_game_api_2")
+        for i in database_games:
+            game_data = {
+                'title' : i['title'],
+                'price' : i['price'],
+                #'initialprice' : 12,
+                #'discount' : 0,
+                #'store' : 'VGM',
+                #'link' : "google.com",
+                #'thumbnail' : i['image_url']
+
+            }
+            games_list.append(game_data)
+
     #----------------------------------------------
     games_list.sort(key=itemgetter("price"))
 
@@ -176,26 +197,8 @@ def index():
 
     if q:
         games_list = [games for games in games_list if q.lower() in games['title'].lower()]
-        
+
     else:
         games_list
-           
+
     return render_template('index1.html', games = games_list)
-
-
-@app.route('/ebaytestnotification',methods = ['GET','POST'])
-def ebaytestnotification():
-    challengeCode = request.args.get("challenge_code")
-    verificationToken = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-    endpoint = "https://video-market-search.herokuapp.com/ebaytestnotification"
-    string_to_hash = challengeCode + verificationToken + endpoint
-    m = hashlib.sha256(str(string_to_hash).encode('utf-8'))
-    print(m.hexdigest())
-
-    return jsonify(
-        challengeResponse=m.hexdigest(),
-    #    status=200,
-    #    mimetype='application/json'
-    )
-
-    #return render_template('ebay_notification.html',response= m.hexdigest())
