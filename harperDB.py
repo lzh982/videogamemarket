@@ -1,5 +1,5 @@
 import harperdb
-import json
+
 
 db = harperdb.HarperDB(
     url="https://videogames-videomarket.harperdbcloud.com/",
@@ -9,6 +9,4 @@ db = harperdb.HarperDB(
 
 
 if __name__ == "__main__":
-    result = db.describe_all()
-    print(result)
-
+    print(db.sql("select * from video_game.video_game_api"))
