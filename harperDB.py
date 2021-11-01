@@ -9,4 +9,4 @@ db = harperdb.HarperDB(
 
 
 if __name__ == "__main__":
-    print(db.describe_all())
+    print(db.sql("select * from video_game.video_game_api"))
