@@ -183,4 +183,5 @@ def index():
 
 @app.route('/ebaytestnotification',methods = ['GET','POST'])
 def ebaytestnotification():
-
+    print(request.args)
+    return render_template('ebay_notification.html',response= request.args)
