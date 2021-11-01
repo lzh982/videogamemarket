@@ -179,3 +179,8 @@ def index():
         games_list
            
     return render_template('index1.html', games = games_list)
+
+
+@app.route('/ebaytestnotification',methods = ['GET','POST'])
+def ebaytestnotification():
+
