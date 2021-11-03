@@ -7,8 +7,10 @@
     <title>Search Game Prices</title>
 
     <!-- Bootstrap core CSS -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
     <style>
       .bd-placeholder-img {
@@ -33,6 +35,10 @@
         max-width: 310px;
         width: auto;
       }
+
+      .pix{
+        font-family: 'VT323', monospace;
+      }
     </style>
 
     <!-- Custom styles for this template -->
@@ -54,8 +60,8 @@
     <div class="container">
 
 
-      <h1 class="jumbotron-heading">Search Games Across Different Stores</h1>
-      <p class="lead text-muted">Get the lowest prices for your searched game</p>
+      <h1 class="jumbotron-heading pix">Search Games Across Different Stores</h1>
+      <p class="lead text-muted pix">Get the lowest prices for your searched game</p>
       <form method="GET">
       <div class="input-group mb-3">
         <input type="text" name="query" class="form-control">
