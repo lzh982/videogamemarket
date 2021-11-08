@@ -19,7 +19,7 @@ def ebay_request(query):
             'link': i['itemWebUrl'],
             'thumbnail': i['thumbnailImages'][0]['imageUrl'],
             'seller': i['seller']['username'],
-            'rating percentage': i['seller']['feedbackPercentage'],
+            'rating_percentage': i['seller']['feedbackPercentage'],
         }
         game_result.append(game_data)
 
