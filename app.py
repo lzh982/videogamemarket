@@ -170,7 +170,7 @@ def index():
 
 
     #----------------------------------------------
-    #games_list.sort(key=itemgetter("price"))
+    games_list.sort(key=itemgetter("price"))
 
     #games_list = sorted(games_list, key = lambda i: i['price'])
     #Implements Search Functionality
