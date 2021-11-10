@@ -13,7 +13,7 @@ import requests
 #for i in ebay_item_summary:
 #    print(i)
 
-url ="http://10.130.20.60/problem/52858/sendmessage.php"
-result = requests.post(url,data={"message": "document.cookie"}).json()
+#url ="http://10.130.20.60/problem/52858/sendmessage.php"
+#result = requests.post(url,data={"message": "document.cookie"}).json()
 
-print(result)
+#print(result)

@@ -19,7 +19,7 @@ def harperdb_request(query):
 
     for i in database_games:
         if harper_query == i['title']:
-            print(i['title'])
+            #print(i['title'])
             game_data_2 = {
                 'title' : i['title'],
                 'price' : i['price'],
@@ -34,7 +34,7 @@ def harperdb_request(query):
 
     return game_result;
 
-print(harperdb_request('Zhihao'))
+#print(harperdb_request('Zhihao'))
 
 
 
@@ -56,3 +56,4 @@ print(harperdb_request('Zhihao'))
 #if __name__ == "__main__":
 #    query = "'Zhihao'"
 #    print(db.sql("select * from video_game.video_game_api_2 WHERE title ="+query))
+

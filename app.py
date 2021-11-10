@@ -157,7 +157,7 @@ def index():
 
 
     if q:
-        # walmart API
+        #walmart API
         walmart_data = walmart_request(q)
         # best buy API
         bestbuy_data = bestbuy_request(q)

@@ -14,6 +14,8 @@ def walmart_request(input):
     walmart_request_url = "https://serpapi.com/search.json?engine=walmart&"+walmart_query+"&"+walmart_cat_id+"&"+walmart_api_key
     walmart_response = requests.get(walmart_request_url).json()
     walmart_result = []
+    if walmart_response['search_information']['organic_results_state']  == "Fully empty":
+        return walmart_result;
     #limit ten results
     ct = 0
     for i in walmart_response["organic_results"]:
