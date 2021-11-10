@@ -8,6 +8,8 @@ from api_function.bestbuy import bestbuy_request
 from api_function.walmart import walmart_request
 from harperDB import harperdb_request
 import harperdb
+from api_function.ebay import ebay_request
+
 
 
 app = Flask(__name__)
@@ -154,15 +156,18 @@ def index():
         games_list.append(game_data)
 
 
-    #walmart API
     if q:
+        # walmart API
         walmart_data = walmart_request(q)
-        games_list+=walmart_data
-
-    #best buy API
-    if q:
+        # best buy API
         bestbuy_data = bestbuy_request(q)
+        # ebay api
+        ebay_data = ebay_request(q)
+
+        games_list+=walmart_data
         games_list+=bestbuy_data
+        games_list+=ebay_data
+
 
 #harperDb
     if q:

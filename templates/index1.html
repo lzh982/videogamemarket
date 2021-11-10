@@ -7,8 +7,10 @@
     <title>Search Game Prices</title>
 
     <!-- Bootstrap core CSS -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
     <style>
       .bd-placeholder-img {
@@ -33,6 +35,10 @@
         max-width: 310px;
         width: auto;
       }
+
+      .pix{
+        font-family: 'VT323', monospace;
+      }
     </style>
 
     <!-- Custom styles for this template -->
@@ -43,6 +49,8 @@
   <body>
 
 <main role="main">
+
+  </div>
   <div class="align-right">
   <a class = "btn btn-primary my-2" style="float: right;" href= "https://find-game-prices-low-data.herokuapp.com/" >Click here to go to Low Data Mode</a> </p>
   </div>
@@ -54,8 +62,8 @@
     <div class="container">
 
 
-      <h1 class="jumbotron-heading">Search Games Across Different Stores</h1>
-      <p class="lead text-muted">Get the lowest prices for your searched game</p>
+      <h1 class="jumbotron-heading pix">Search Games Across Different Stores</h1>
+      <p class="lead text-muted pix">Get the lowest prices for your searched game</p>
       <form method="GET">
       <div class="input-group mb-3">
         <input type="text" name="query" class="form-control">
@@ -85,8 +93,12 @@
               {% if game.rating%}
                 <p class="card-text">Game rating:{{game.rating}}</p>
               {% endif %}
-
-
+              {% if game.seller%}
+                <p class="card-text">Seller:{{game.seller}}</p>
+              {% endif %}
+              {% if game.rating_percentage%}
+                <p class="card-text">Seller rating:{{game.rating_percentage}}</p>
+              {% endif %}
               <center><a class = "btn btn-primary my-2" href= {{game.link}} target="_blank">Purchase Game from {{game.store}}</a> </p></center>
               <div class="d-flex justify-content-between align-items-center">
                 

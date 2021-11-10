@@ -52,3 +52,7 @@ print(harperdb_request('Zhihao'))
 #    database_games = db.sql("select * from video_game.video_game_api_2")
 #    for i in database_games:
 #        print(i['title'])
+
+#if __name__ == "__main__":
+#    query = "'Zhihao'"
+#    print(db.sql("select * from video_game.video_game_api_2 WHERE title ="+query))
