@@ -6,6 +6,7 @@ from datetime import datetime
 from operator import itemgetter
 from api_function.bestbuy import bestbuy_request
 from api_function.walmart import walmart_request
+from harperDB import harperdb_request
 import harperdb
 
 
@@ -163,28 +164,35 @@ def index():
         bestbuy_data = bestbuy_request(q)
         games_list+=bestbuy_data
 
+#harperDb
+    if q:
+        harper_data = harperdb_request(q)
+        games_list+=harper_data
 
-    db = harperdb.HarperDB(
-        url="https://videogames-videomarket.harperdbcloud.com",
-        username="video_game_market",
-        password="video_game_market"
-    )
-
-    if __name__ == "__main__":
+#    db = harperdb.HarperDB(
+#        url="https://videogames-videomarket.harperdbcloud.com",
+#        username="video_game_market",
+#        password="video_game_market"
+#    )
+#    print('hello')
+#    if __name__ == "__main__":
+#        app.run(debug=True)
         #print(db.describe_all())
-        database_games = db.sql("select * from video_game.video_game_api_2")
-        for i in database_games:
-            game_data = {
-                'title' : i['title'],
-                'price' : i['price'],
+#        database_games = db.sql("select * from video_game.video_game_api_2")
+
+#        for i in database_games:
+#            print(i['title'])
+#            game_data_2 = {
+#                'title' : i['title'],
+#                'price' : i['price'],
                 #'initialprice' : 12,
                 #'discount' : 0,
                 #'store' : 'VGM',
                 #'link' : "google.com",
-                #'thumbnail' : i['image_url']
+#                'thumbnail' : i['image_url']
 
-            }
-            games_list.append(game_data)
+#            }
+#            games_list.append(game_data_2)
 
     #----------------------------------------------
     games_list.sort(key=itemgetter("price"))
