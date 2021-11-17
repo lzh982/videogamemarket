@@ -15,26 +15,42 @@ def harperdb_request(query):
     game_result = []
     harper_query = query
 #        print("hello")
-    database_games = db.sql("select * from video_game.video_game_api_2 WHERE title = '" + harper_query + "'") # where title =" + harper_query)
+    database_games = db.sql("select * from video_game.video_game where title = '" + harper_query + "'")
+    # contains(title, '" + harper_query + "'")
+    #" WHERE title = '" + harper_query + "'") # where title =" + harper_query)
 
     for i in database_games:
         if harper_query == i['title']:
             print(i['title'])
-            game_data_2 = {
-                'title' : i['title'],
-                'price' : i['price'],
-                'initialprice' : 12,
-            #'discount' : 0,
-            #'store' : 'VGM',
-            #'link' : "google.com",
-                'thumbnail' : i['image_url']
-
-            }
+            print(i['seller_rating'])
+            if i['seller_rating'] >= 80:
+                print("inside if statement")
+                game_data_2 = {
+                    'title' : i['title'],
+                    'price' : i['price'],
+                    'initialprice' : i['initial_price'],
+                    'discount' : i['discount'],
+                    'store' : 'database',
+                    'link' : i['website'],
+                    'thumbnail' : i['image'],
+                    'seller' : i['seller_rating']
+                }
+            else:
+                print("inside else statement")
+                game_data_2 = {
+                    'title' : i['title'],
+                    'price' : i['price'],
+                    'initialprice' : i['initial_price'],
+                    'discount' : i['discount'],
+                    'thumbnail' : i['image'],
+                    'seller' : i['seller_rating'],
+                    'bad_seller': "Unverified seller"
+                }
         game_result.append(game_data_2)
 
     return game_result;
 
-print(harperdb_request('Zhihao'))
+print(harperdb_request('Dangerous Dave'))
 
 
 
