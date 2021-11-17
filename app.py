@@ -157,19 +157,21 @@ def index():
 
 
     if q:
-        # walmart API
-        walmart_data = walmart_request(q)
+        #walmart API
+#        walmart_data = walmart_request(q)
         # best buy API
-        bestbuy_data = bestbuy_request(q)
+#        bestbuy_data = bestbuy_request(q)
         # ebay api
-        ebay_data = ebay_request(q)
-        # harperDb
+#        ebay_data = ebay_request(q)
+        #database request
         harper_data = harperdb_request(q)
 
-        games_list+=walmart_data
-        games_list+=bestbuy_data
-        games_list+=ebay_data
+
         games_list+=harper_data
+#        games_list+=walmart_data
+#        games_list+=bestbuy_data
+#        games_list+=ebay_data
+
 
 #harperDb
 #    if q:

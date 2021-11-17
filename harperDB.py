@@ -54,8 +54,6 @@ print(harperdb_request('Dangerous Dave'))
 
 
 
-
-
 #db = harperdb.HarperDB(
 #    url="https://videogames-videomarket.harperdbcloud.com/",
 #    username="video_game_market",
