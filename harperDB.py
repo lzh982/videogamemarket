@@ -21,6 +21,7 @@ def harperdb_request(query):
 
     for i in database_games:
         if harper_query == i['title']:
+
             print(i['title'])
             print(i['seller_rating'])
             if i['seller_rating'] >= 80:
@@ -46,11 +47,14 @@ def harperdb_request(query):
                     'seller' : i['seller_rating'],
                     'bad_seller': "Unverified seller"
                 }
+
         game_result.append(game_data_2)
 
     return game_result;
 
+
 print(harperdb_request('Dangerous Dave'))
+
 
 
 
@@ -70,3 +74,4 @@ print(harperdb_request('Dangerous Dave'))
 #if __name__ == "__main__":
 #    query = "'Zhihao'"
 #    print(db.sql("select * from video_game.video_game_api_2 WHERE title ="+query))
+
