@@ -59,21 +59,27 @@
       <i class="fab fa-playstation fa-5x"></i>
       <i class="fab fa-steam fa-5x"></i>
       <i class="fab fa-xbox fa-5x"></i>
-    <div class="container">
+      <div class="container">
 
 
-      <h1 class="jumbotron-heading pix">Search Games Across Different Stores</h1>
-      <p class="lead text-muted pix">Get the lowest prices for your searched game</p>
-      <form method="GET">
-      <div class="input-group mb-3">
-        <input type="text" name="query" class="form-control">
+        <h1 class="jumbotron-heading pix">Search Games Across Different Stores</h1>
+        <p class="lead text-muted pix">Get the lowest prices for your searched game</p>
+        <form method="GET">
+        <div class="input-group mb-3">
+          <input type="text" name="query" class="form-control">
+            <select name="cars" id="cars">
+              <option value="PS4">PS4</option>
+              <option value="Nintendo Switch">Nintendo Switch</option>
+              <option value="Xbox One">Xbox One</option>
+            </select>
+        </div>
+        <p>
+          <button type="submit" name="submit" value="search" class="btn btn-primary my-2">Search</button>
+
+        </p>
+        </form>
+
       </div>
-      <p>
-        <button type="submit" name="submit" value="search" class="btn btn-primary my-2">Search</button>
-
-      </p>
-      </form>
-    </div>
   </section>
 
   <div class="album py-5 bg-light">
