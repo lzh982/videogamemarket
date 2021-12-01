@@ -229,6 +229,9 @@ def withoutebay():
 
     #Stores user search input in q
     q = request.args.get('query')
+    platform_filter = request.args.get('platform')
+
+    print(platform_filter)
     if type(q) != str:
         q =""
 
@@ -393,6 +396,17 @@ def withoutebay():
     else:
         games_list
 
+
+    #apply filtering
+    print(platform_filter)
+    if(platform_filter != None or platform_filter != 'none'):
+        new_game_list = []
+        for i in games_list:
+            print(platform_filter)
+            #if(i['title'].find(platform_filter)):
+            #    new_game_list.append(i)
+
+        return render_template('index1.html', games = new_game_list)
     return render_template('index1.html', games = games_list)
 
 
