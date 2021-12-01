@@ -398,13 +398,20 @@ def withoutebay():
 
 
     #apply filtering
-    print(platform_filter)
-    if(platform_filter != None or platform_filter != 'none'):
+    print("plarform :",platform_filter)
+    if(platform_filter is None):
+        print("there are not any platform filter applied")
+        #else if(platform_filter is not None or platform_filter != 'None' or platform_filter != 'none'):
+    else:
+        print("applying the platform filter")
         new_game_list = []
         for i in games_list:
-            print(platform_filter)
-            #if(i['title'].find(platform_filter)):
-            #    new_game_list.append(i)
+            title_to_search = i['title'].lower()
+            #rint(title_to_search.find(platform_filter),"title :",title_to_search)
+            if(title_to_search.find(platform_filter)>=0):
+
+                #print(platform_filter,":",title_to_search)
+                new_game_list.append(i)
 
         return render_template('index1.html', games = new_game_list)
     return render_template('index1.html', games = games_list)
