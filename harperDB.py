@@ -11,20 +11,27 @@ db = harperdb.HarperDB(
 
 
 
-def harperdb_request(query):
+def harperdb_request(query, platform):
     game_result = []
 #    harper_query = query
     harper_query = query.upper()
+#    query_console = q2.upper()
     varTemp = '%'
-#        print("hello")
-    print("select * from video_game.video_game where upper(title) like '" + varTemp + harper_query + varTemp + "'")
-    database_games = db.sql("select * from video_game.video_game where upper(title) like '" + varTemp + harper_query + varTemp + "'")
+#    print(query_console)
+#    print("select * from video_game.video_game where upper(title) like '" + varTemp + harper_query + varTemp + "' AND upper(console) = '" + query_console + "'")
+
+    if platform == "Select Console":
+        database_games = db.sql("select * from video_game.video_game_2 where upper(title) like '"
+        + varTemp + harper_query + varTemp + "'")
+    else:
+        query_console = platform.upper()
+        database_games = db.sql("select * from video_game.video_game_2 where upper(title) like '"
+        + varTemp + harper_query + varTemp + "' AND upper(console) = '" + query_console + "'")
     # contains(title, '" + harper_query + "'")
     #" WHERE title = '" + harper_query + "'") # where title =" + harper_query)
-
     for i in database_games:
         if harper_query in i['title'].upper() or harper_query == i['title'].upper():
-#            print(i['title'])
+#            print(query_console)
 #            print(i['seller_rating'])
             if i['seller_rating'] >= 80:
 #                print("inside if statement")
@@ -36,7 +43,8 @@ def harperdb_request(query):
                     'store' : 'database',
                     'link' : i['website'],
                     'thumbnail' : i['image'],
-                    'seller' : i['seller_rating']
+                    'seller' : i['seller_rating'],
+                    'console' : i['console']
                 }
             else:
 #                print("inside else statement")
@@ -48,13 +56,55 @@ def harperdb_request(query):
                     'store' : 'database',
                     'thumbnail' : i['image'],
                     'seller' : i['seller_rating'],
+                    'console' : i['console'],
                     'bad_seller': "Unverified seller"
                 }
         game_result.append(game_data_2)
 
     return game_result;
 
-print(harperdb_request('Dangerous Dave'))
+
+def prerence_tag_request(query1){
+    game_result = []
+    database_games = db.sql("select * from video_game.video_game_2 where genre = '" + insert_preference_tag_name + "'")
+
+    for i in database_games:
+        if harper_query in i['title'].upper() or harper_query == i['title'].upper():
+#            print(query_console)
+#            print(i['seller_rating'])
+            if i['seller_rating'] >= 80:
+#                print("inside if statement")
+                game_data_2 = {
+                    'title' : i['title'],
+                    'price' : i['price'],
+                    'initialprice' : i['initial_price'],
+                    'discount' : i['discount'],
+                    'store' : 'database',
+                    'link' : i['website'],
+                    'thumbnail' : i['image'],
+                    'seller' : i['seller_rating'],
+                    'console' : i['console']
+                }
+            else:
+#                print("inside else statement")
+                game_data_2 = {
+                    'title' : i['title'],
+                    'price' : i['price'],
+                    'initialprice' : i['initial_price'],
+                    'discount' : i['discount'],
+                    'store' : 'database',
+                    'thumbnail' : i['image'],
+                    'seller' : i['seller_rating'],
+                    'console' : i['console'],
+                    'bad_seller': "Unverified seller"
+                }
+        game_result.append(game_data_2)
+
+    return game_result;
+
+
+}
+#print(harperdb_request('Dangerous Dave'))
 
 
 
