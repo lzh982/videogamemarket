@@ -15,14 +15,17 @@ def harperdb_request(query, platform):
     game_result = []
 #    harper_query = query
     harper_query = query.upper()
-#    query_console = q2.upper()
+#    query_console = platform.upper()
     varTemp = '%'
 #    print(query_console)
 #    print("select * from video_game.video_game where upper(title) like '" + varTemp + harper_query + varTemp + "' AND upper(console) = '" + query_console + "'")
-
+    print(harper_query)
     if platform == "Select Console":
-        database_games = db.sql("select * from video_game.video_game_2 where upper(title) like '"
-        + varTemp + harper_query + varTemp + "'")
+        database_games = db.sql("select * from video_game.video_game_2 where upper(title) like '" + varTemp + harper_query + varTemp + "'")
+    elif harper_query == "":
+        query_console = platform
+        database_games = db.sql("select * from video_game.video_game_2 where console = '" + query_console + "'")
+        print(db.sql("select * from video_game.video_game_2 where console = '" + query_console + "'"))
     else:
         query_console = platform.upper()
         database_games = db.sql("select * from video_game.video_game_2 where upper(title) like '"
@@ -63,10 +66,11 @@ def harperdb_request(query, platform):
 
     return game_result;
 
-
-def prerence_tag_request(query1){
+"""
+def preference_tag_request(query1){
     game_result = []
-    database_games = db.sql("select * from video_game.video_game_2 where genre = '" + insert_preference_tag_name + "'")
+#    database_games = db.sql("select * from video_game.video_game_2 where genre = '"
+#     + insert_preference_tag_name + "'")
 
     for i in database_games:
         if harper_query in i['title'].upper() or harper_query == i['title'].upper():
@@ -104,6 +108,7 @@ def prerence_tag_request(query1){
 
 
 }
+"""
 #print(harperdb_request('Dangerous Dave'))
 
 
