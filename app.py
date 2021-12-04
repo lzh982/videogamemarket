@@ -26,6 +26,10 @@ def index():
     if type(q) != str:
         q =""
 
+    platform_filter = request.args.get('platform')
+
+    print(platform_filter)
+
     #Steam API URL
     req = 'https://steamspy.com/api.php'
 
@@ -118,7 +122,7 @@ def index():
             'thumbnail' : game_thumbnail
         }
 
-        games_list.append(game_data)
+#        games_list.append(game_data)
     #----------------------------------------------
 
     #GOG API---------------------------------------
@@ -133,7 +137,7 @@ def index():
             'link' : ("https://www.gog.com" + i['url']),
             'thumbnail' : (i['image'] + "_product_tile_398_2x.jpg")
         }
-        games_list.append(game_data)
+#        games_list.append(game_data)
     #----------------------------------------------
 
     #STEAM API-------------------------------------
@@ -153,24 +157,29 @@ def index():
             'thumbnail' : ('https://cdn.cloudflare.steamstatic.com/steam/apps/' + str(steam_games[i]['appid']) + '/header.jpg')
 
         }
-        games_list.append(game_data)
+#        games_list.append(game_data)
 
 
     if q:
         #walmart API
-        walmart_data = walmart_request(q)
+#        walmart_data = walmart_request(q)
         # best buy API
-        bestbuy_data = bestbuy_request(q)
+#        bestbuy_data = bestbuy_request(q)
         # ebay api
-        ebay_data = ebay_request(q)
+#        ebay_data = ebay_request(q)
         #database request
-        harper_data = harperdb_request(q)
+        harper_data = harperdb_request(q, platform_filter)
 
 
         games_list+=harper_data
-        games_list+=walmart_data
-        games_list+=bestbuy_data
-        games_list+=ebay_data
+#        games_list+=walmart_data
+#        games_list+=bestbuy_data
+#        games_list+=ebay_data
+    else:
+        #database request
+        if platform_filter:
+            harper_data = harperdb_request(q, platform_filter)
+            games_list+=harper_data
 
 
 #harperDb

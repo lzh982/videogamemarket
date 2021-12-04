@@ -39,6 +39,7 @@
       .pix{
         font-family: 'VT323', monospace;
       }
+      .button2 {background-color: #4CAF50;}
     </style>
 
     <!-- Custom styles for this template -->
@@ -67,10 +68,21 @@
       <form method="GET">
       <div class="input-group mb-3">
         <input type="text" name="query" class="form-control">
+          <select name="platform">
+              <option value="Select Console">Select Console</option>
+              <option value="PS4">PS4</option>
+              <option value="Nintendo Switch">Nintendo Switch</option>
+              <option value="Xbox One">Xbox One</option>
+              <option value="Wii">Wii</option>
+          </select>
       </div>
       <p>
         <button type="submit" name="submit" value="search" class="btn btn-primary my-2">Search</button>
 
+        <br>
+        <button type="preference" name="submit" value="search" class="button button2">Preference</button>
+        <button type="preference" name="submit" value="search" class="button button2">Shooting</button>
+        <button type="preference" name="submit" value="search" class="button button2">Sports</button>
       </p>
       </form>
     </div>
@@ -91,13 +103,16 @@
               <p class="card-text">Discount: {{game.discount}}%</p>
               <p class="card-text">Intial price: ${{game.initialprice}}</p>
               {% if game.rating%}
-                <p class="card-text">Game rating:{{game.rating}}</p>
+                <p class="card-text">Game rating: {{game.rating}}</p>
               {% endif %}
               {% if game.seller%}
-                <p class="card-text">Seller:{{game.seller}}</p>
+                <p class="card-text">Seller: {{game.seller}}</p>
               {% endif %}
               {% if game.rating_percentage%}
-                <p class="card-text">Seller rating:{{game.rating_percentage}}</p>
+                <p class="card-text">Seller rating: {{game.rating_percentage}}</p>
+              {% endif %}
+              {% if game.console%}
+                <p class="card-text">Console: {{game.console}}</p>
               {% endif %}
               {% if game.bad_seller%}
                 <p class="card-text">Bad Seller: {{game.bad_seller}}</p>
