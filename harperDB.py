@@ -20,16 +20,20 @@ def harperdb_request(query, platform):
 #    print(query_console)
 #    print("select * from video_game.video_game where upper(title) like '" + varTemp + harper_query + varTemp + "' AND upper(console) = '" + query_console + "'")
     print(harper_query)
-    if platform == "Select Console":
-        database_games = db.sql("select * from video_game.video_game_2 where upper(title) like '" + varTemp + harper_query + varTemp + "'")
-    elif harper_query == "":
-        query_console = platform
-        database_games = db.sql("select * from video_game.video_game_2 where console = '" + query_console + "'")
-        print(db.sql("select * from video_game.video_game_2 where console = '" + query_console + "'"))
+    if platform == "None":
+        return ""
     else:
-        query_console = platform.upper()
-        database_games = db.sql("select * from video_game.video_game_2 where upper(title) like '"
-        + varTemp + harper_query + varTemp + "' AND upper(console) = '" + query_console + "'")
+        if platform == "Select Console":
+            database_games = db.sql("select * from video_game.video_game_2 where upper(title) like '" + varTemp + harper_query + varTemp + "'")
+        elif harper_query == "":
+            query_console = platform
+            database_games = db.sql("select * from video_game.video_game_2 where console = '" + query_console + "'")
+    #        database_games = "nothing"
+            print(db.sql("select * from video_game.video_game_2 where console = '"+ query_console +"'"))
+        else:
+            query_console = platform.upper()
+            database_games = db.sql("select * from video_game.video_game_2 where upper(title) like '"
+            + varTemp + harper_query + varTemp + "' AND upper(console) = '" + query_console + "'")
     # contains(title, '" + harper_query + "'")
     #" WHERE title = '" + harper_query + "'") # where title =" + harper_query)
     for i in database_games:
@@ -43,7 +47,7 @@ def harperdb_request(query, platform):
                     'price' : i['price'],
                     'initialprice' : i['initial_price'],
                     'discount' : i['discount'],
-                    'store' : 'database',
+                    'store' : 'amazon',
                     'link' : i['website'],
                     'thumbnail' : i['image'],
                     'seller' : i['seller_rating'],
@@ -56,7 +60,7 @@ def harperdb_request(query, platform):
                     'price' : i['price'],
                     'initialprice' : i['initial_price'],
                     'discount' : i['discount'],
-                    'store' : 'database',
+                    'store' : 'amazon',
                     'thumbnail' : i['image'],
                     'seller' : i['seller_rating'],
                     'console' : i['console'],
@@ -109,7 +113,7 @@ def preference_tag_request(query1){
 
 }
 """
-#print(harperdb_request('Dangerous Dave'))
+#print(harperdb_request('', 'PS4'))
 
 
 

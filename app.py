@@ -28,7 +28,7 @@ def index():
 
     platform_filter = request.args.get('platform')
 
-#    print(platform_filter)
+    print(platform_filter)
 
     #Steam API URL
     req = 'https://steamspy.com/api.php'
@@ -177,8 +177,9 @@ def index():
 #        games_list+=ebay_data
     else:
         #database request
-        harper_data = harperdb_request(q, platform_filter)
-        games_list+=harper_data
+        if platform_filter:
+            harper_data = harperdb_request(q, platform_filter)
+            games_list+=harper_data
 
 
 #harperDb
