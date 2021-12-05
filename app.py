@@ -123,7 +123,7 @@ def index():
             'thumbnail' : game_thumbnail
         }
 
-#        games_list.append(game_data)
+        games_list.append(game_data)
     #----------------------------------------------
 
     #GOG API---------------------------------------
@@ -138,7 +138,7 @@ def index():
             'link' : ("https://www.gog.com" + i['url']),
             'thumbnail' : (i['image'] + "_product_tile_398_2x.jpg")
         }
-#        games_list.append(game_data)
+        games_list.append(game_data)
     #----------------------------------------------
 
     #STEAM API-------------------------------------
@@ -158,29 +158,29 @@ def index():
             'thumbnail' : ('https://cdn.cloudflare.steamstatic.com/steam/apps/' + str(steam_games[i]['appid']) + '/header.jpg')
 
         }
-#        games_list.append(game_data)
+        games_list.append(game_data)
 
 
     if q:
         #walmart API
-#        walmart_data = walmart_request(q)
+        walmart_data = walmart_request(q)
         # best buy API
-#        bestbuy_data = bestbuy_request(q)
+        bestbuy_data = bestbuy_request(q)
         # ebay api
-#        ebay_data = ebay_request(q)
+        ebay_data = ebay_request(q)
         #database request
         harper_data = harperdb_request(q, platform_filter)
 
 
         games_list+=harper_data
-#        games_list+=walmart_data
-#        games_list+=bestbuy_data
-#        games_list+=ebay_data
-    else:
-        #database request
-        if platform_filter:
-            harper_data = harperdb_request(q, platform_filter)
-            games_list+=harper_data
+        games_list+=walmart_data
+        games_list+=bestbuy_data
+        games_list+=ebay_data
+#    else:
+#        #database request
+#        if platform_filter:
+#            harper_data = harperdb_request(q, platform_filter)
+#            games_list+=harper_data
 
 
 #harperDb
@@ -232,20 +232,26 @@ def index():
     print(games_list)
     #apply filtering
     print("plarform :",platform_filter)
-    if(platform_filter is None):
+    if(platform_filter is None or platform_filter =="Select Console"):
         print("there are not any platform filter applied")
         #else if(platform_filter is not None or platform_filter != 'None' or platform_filter != 'none'):
     else:
         print("applying the platform filter")
         new_game_list = []
+
+        platform_filter_lower_case = platform_filter.lower()
         for i in games_list:
             title_to_search = i['title'].lower()
             #rint(title_to_search.find(platform_filter),"title :",title_to_search)
-            if(title_to_search.find(platform_filter)>=0):
+            if(title_to_search.find(platform_filter_lower_case)>=0):
                 print(i)
                 #print(platform_filter,":",title_to_search)
                 new_game_list.append(i)
 
+        #database filter query
+        harper_data = harperdb_request(q, platform_filter)
+        new_game_list+=harper_data
+        print(harper_data)
         return render_template('index1.html', games = new_game_list)
 
     return render_template('index1.html', games = games_list)
@@ -429,7 +435,7 @@ def withoutebay():
 
     #apply filtering
     print("plarform :",platform_filter)
-    if(platform_filter is None or platform_filter == 'none'):
+    if(platform_filter is None or platform_filter == 'Select Console'):
         print("there are not any platform filter applied")
         #else if(platform_filter is not None or platform_filter != 'None' or platform_filter != 'none'):
     else:

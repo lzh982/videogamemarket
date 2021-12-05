@@ -11,9 +11,9 @@ def bestbuy_request(query):
 
         game_data = {
             'title': i['name'],
-            'price': i['regularPrice'],
-            'initialprice': i['salePrice'],
-            'discount' : "some discount",
+            'price':  i['salePrice'],
+            'initialprice': i['regularPrice'],
+            'discount' : int(((i['regularPrice'] - i['salePrice']) / i['regularPrice']) *100),
             'store': 'Bestbuy',
             # 'seller': i['seller_name'],
             'link': i['url'],

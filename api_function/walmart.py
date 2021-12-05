@@ -24,6 +24,8 @@ def walmart_request(input):
         if ct == 10:
             break
 
+
+        print(i['primary_offer'])
         game_dprice = i['primary_offer']['offer_price']
         #game_dprice = game_dprice.replace('$','')
         game_dprice = float(game_dprice)
