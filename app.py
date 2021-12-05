@@ -160,6 +160,8 @@ def index():
         }
         games_list.append(game_data)
 
+    if platform_filter == "PC":
+        return render_template('index1.html', games = games_list)
 
     if q:
         #walmart API
