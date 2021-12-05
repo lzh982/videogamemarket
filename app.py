@@ -20,6 +20,7 @@ def index():
     games_list = []
     #Parameters for Steam API
     parameters = {"request": "all"}
+    platform_filter = request.args.get('platform')
 
     #Stores user search input in q
     q = request.args.get('query')
@@ -227,6 +228,26 @@ def index():
     else:
         games_list
 
+
+    print(games_list)
+    #apply filtering
+    print("plarform :",platform_filter)
+    if(platform_filter is None):
+        print("there are not any platform filter applied")
+        #else if(platform_filter is not None or platform_filter != 'None' or platform_filter != 'none'):
+    else:
+        print("applying the platform filter")
+        new_game_list = []
+        for i in games_list:
+            title_to_search = i['title'].lower()
+            #rint(title_to_search.find(platform_filter),"title :",title_to_search)
+            if(title_to_search.find(platform_filter)>=0):
+                print(i)
+                #print(platform_filter,":",title_to_search)
+                new_game_list.append(i)
+
+        return render_template('index1.html', games = new_game_list)
+
     return render_template('index1.html', games = games_list)
 
 @app.route('/withoutebay',methods = ['GET','POST'])
@@ -238,6 +259,9 @@ def withoutebay():
 
     #Stores user search input in q
     q = request.args.get('query')
+    platform_filter = request.args.get('platform')
+
+    print(platform_filter)
     if type(q) != str:
         q =""
 
@@ -402,6 +426,24 @@ def withoutebay():
     else:
         games_list
 
+
+    #apply filtering
+    print("plarform :",platform_filter)
+    if(platform_filter is None or platform_filter == 'none'):
+        print("there are not any platform filter applied")
+        #else if(platform_filter is not None or platform_filter != 'None' or platform_filter != 'none'):
+    else:
+        print("applying the platform filter")
+        new_game_list = []
+        for i in games_list:
+            title_to_search = i['title'].lower()
+            #rint(title_to_search.find(platform_filter),"title :",title_to_search)
+            if(title_to_search.find(platform_filter)>=0):
+
+                #print(platform_filter,":",title_to_search)
+                new_game_list.append(i)
+
+        return render_template('index1.html', games = new_game_list)
     return render_template('index1.html', games = games_list)
 
 
@@ -615,3 +657,4 @@ def low_data():
         games_list
 
     return render_template('video_game_lowdata.html', games = games_list)
+
