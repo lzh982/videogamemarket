@@ -220,6 +220,7 @@ def index():
         games_list
 
 
+    print(games_list)
     #apply filtering
     print("plarform :",platform_filter)
     if(platform_filter is None):
@@ -232,7 +233,7 @@ def index():
             title_to_search = i['title'].lower()
             #rint(title_to_search.find(platform_filter),"title :",title_to_search)
             if(title_to_search.find(platform_filter)>=0):
-
+                print(i)
                 #print(platform_filter,":",title_to_search)
                 new_game_list.append(i)
 
@@ -387,7 +388,7 @@ def withoutebay():
 
     if q:
         #walmart API
-        #walmart_data = walmart_request(q)
+        walmart_data = walmart_request(q)
         # best buy API
         bestbuy_data = bestbuy_request(q)
         # ebay api
@@ -397,7 +398,7 @@ def withoutebay():
 
 
         games_list+=harper_data
-        #games_list+=walmart_data
+        games_list+=walmart_data
         games_list+=bestbuy_data
         #games_list+=ebay_data
 
@@ -419,7 +420,7 @@ def withoutebay():
 
     #apply filtering
     print("plarform :",platform_filter)
-    if(platform_filter is None):
+    if(platform_filter is None or platform_filter == 'none'):
         print("there are not any platform filter applied")
         #else if(platform_filter is not None or platform_filter != 'None' or platform_filter != 'none'):
     else:
