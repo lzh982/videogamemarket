@@ -29,7 +29,8 @@ def walmart_request(input):
         game_dprice = i['primary_offer']['offer_price']
         #game_dprice = game_dprice.replace('$','')
         game_dprice = float(game_dprice)
-        if(game_dprice < 20):
+
+        if(game_dprice < 2):
             continue
         game_data = {
             'title': i['title'],
