@@ -69,6 +69,8 @@ def index():
     endpoint = " "
 
     for game in epic_games:
+        if(game['negative']>game['positive']):
+            continue
 
         game_name = game['title']
         game_thumbnail = None
@@ -120,7 +122,8 @@ def index():
             'discount' : discount,
             'store' : 'Epic Games',
             'link' : epic_url,
-            'thumbnail' : game_thumbnail
+            'thumbnail' : game_thumbnail,
+            'console' : "PC"
         }
 
         games_list.append(game_data)
@@ -144,7 +147,8 @@ def index():
             'store' : 'GOG',
             'link' : ("https://www.gog.com" + i['url']),
             'thumbnail' : (i['image'] + "_product_tile_398_2x.jpg"),
-            'genres' : i['genres']
+            'genres' : i['genres'],
+            'console': "PC"
         }
         games_list.append(game_data)
     #----------------------------------------------
@@ -166,8 +170,8 @@ def index():
             'discount' : discount,
             'store' : 'Steam',
             'link' : ("https://store.steampowered.com/app/" + str(steam_games[i]['appid'])),
-            'thumbnail' : ('https://cdn.cloudflare.steamstatic.com/steam/apps/' + str(steam_games[i]['appid']) + '/header.jpg')
-
+            'thumbnail' : ('https://cdn.cloudflare.steamstatic.com/steam/apps/' + str(steam_games[i]['appid']) + '/header.jpg'),
+            'console': "PC"
         }
         games_list.append(game_data)
 

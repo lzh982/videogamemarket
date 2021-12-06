@@ -285,4 +285,3 @@ if(walmart_request("demon soul")[0]['store'] == 'Walmart'):
 if(harperdb_request("sport", "wii")[0]['title'] == "Wii Sports"):
     print("harper db query successfully")
 
-#print(harperdb_request("sport", "wii"))
