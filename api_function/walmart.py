@@ -19,15 +19,20 @@ def walmart_request(input):
     #limit ten results
     ct = 0
     for i in walmart_response["organic_results"]:
-        if (i['rating'] < 4.0): #or i['reviews'] < 3):
+        if (i['rating'] < 4.0):
             continue
         if ct == 10:
             break
+        if (i['reviews']<20):
+            continue
+        if (i['out_of_stock']==True):
+            continue
 
         game_dprice = i['primary_offer']['offer_price']
         #game_dprice = game_dprice.replace('$','')
         game_dprice = float(game_dprice)
-        if(game_dprice < 20):
+
+        if(game_dprice < 2):
             continue
         game_data = {
             'title': i['title'],
@@ -38,7 +43,7 @@ def walmart_request(input):
             'seller': i['seller_name'],
             'link' : i['product_page_url'],
             'thumbnail' : i['thumbnail'],
-            'rating' : i['rating'],
+            'rating (out of 5)' : i['rating'],
             'reviews' : i['reviews'],
         }
         walmart_result.append(game_data)

@@ -5,17 +5,26 @@ import json
 def ebay_request(query):
     url = "https://api.ebay.com/buy/browse/v1/item_summary/search?q=" + query + "&category_ids=139973&limit=10&offset=10"
 
-    token = "Bearer v^1.1#i^1#r^0#I^3#p^1#f^0#t^H4sIAAAAAAAAAOVYe2wURRjvXR9QEOQPAlSMXhaIsWVf974Nd3p9QFv6oncUWkJgdne2t3Qfx86s7RmQhqeJkYBANCBCMMSEPyQxmghGYkxMjJIgAkZEwx+iobEmlUCwRKNz16NcK4GWnrGJ989lZ77vm+/3m+8xM1xvSWn5ztqdt2c4pjiP9nK9ToeDn86VlhRXzCx0PlFcwOUIOI72Luwt2lp4fQkCupYUWiFKmgaCrh5dM5CQGQxTtmUIJkAqEgygQyRgSYhFGxsEN8MJScvEpmRqlKuuOkwFoBf4YIjjRD4kKdBDRo27NuNmmOKD0B8CkFN8vpA/KItkHiEb1hkIAwOHKTfn5mneTXO+OB8U3JzgDTBej6eDcrVBC6mmQUQYjopk3BUyulaOrw92FSAELUyMUJG66NJYc7SuuqYpvoTNsRXJ8hDDANto5FeVKUNXG9Bs+OBlUEZaiNmSBBGi2MjQCiONCtG7zjyC+xmqRQ8IKADwbo+s+HkQyguVS01LB/jBfqRHVJlWMqICNLCKUw9jlLAhboASzn41ERN11a703wobaKqiQitM1VRG26MtLVSkI6EmgNmg0m2qDM1lQKdjlatpCMSQyElBhfYAxe/z+5XsQkPWsjSPWqnKNGQ1TRpyNZm4EhKv4Whu+BxuiFCz0WxFFZz2KEeOEJjl0B3qSG/q0C7aOGGk9xXqhAhX5vPhOzCsjbGlijaGwxZGT2QoClMgmVRlavRkJhaz4dODwlQC46TAst3d3Uy3hzGtTtbNcTy7urEhJiWgDigim871IXn14Qq0moEiQaKJVAGnksSXHhKrxAGjk4p4Ah4/H8jyPtKtyOjRfwzkYGZHZkS+MiQo8t6AGFBCZCNCXpnPR4ZEskHKpv2AIkjROrC6IE5qQIK0ROLM1qGlyoLHp7g9QQXSsj+k0N6QotCiT/bTvAIhB6EoSqHg/ylRxhrqMShZEOcl1vMW5yG7Hm2oWq0nmxMNenMHH091NWmN3UGLbdDrbVTZUo+9UmV3lO00w2PNhvuCr9JUwkycrJ8PAtK5nj8Sak2EoTwheDHJTMIWU1Ol1OTaYI8ltwALpyrtFPmOQU0jfxOCGk0m6/JTsfMGcpzF4tFw569T/Udd6r6oUDpwJxeqtD4iBkBSZUgfSud6ipFMnTUBOYSkh9dlvHaNEryvECvaKabThggTT2RyDhyzkkqKOUNamjx2laGGSUCMXYVcMmRbwo+0UKYzM4RNtTOB0bjW7JkIKaKtdU0o6FRyeZhUIUfgDuEm9SNz6mcy4Bn0gsRYEJm2RS48THP6EBw3u6BBjhTYMjUNWm38hIuprtsYiBqcbFU1D9VFBeM77xRtdXzxr+Pi/Z5gwB30eieGTcqcaNZNtp6Q7144jrsNO/KlJVKQ+fFbHR9zWx2nnA4HF+BovoJ7tqRwZVHhYxQi1YRBwJBFs4dRgcKQQmYAbFuQ6YKpJFAtZ4lD/e6i9HvOG8/Rtdy84Vee0kJ+es6TD/fkvZli/vG5M9w87+Z8fNDNeQMd3IJ7s0X8nKLZzhM1bN/pXZc2ls49+OqH/I3+N8o0bsawkMNRXEACsmDHdv3bwaut1e3zD95KXvtpIPXU4jPnXzx2uvzYr2fXL7gOp9TOvLz/yo6Fidnvt4N3bpSd+h7t6ThwpOSjyyteZ9fMq+grczYWHnr5Ss3ijWe3LQ1daP1x9+d9g3cG/mz9qm1PdJV2ctPUn9lgzW93Lmy6uGpwyrTj5bU8PSd+8tJK31vgvV312147pv51rvGTgsMvbd59YZbY3Rd9xvhhy6Wm7QNViT/O7285fuj0p9T6r1e1X9Vu3oxc9Tpnb1l2a9Pzs9YMrIWbKz4oe/rwnc2RM/39b+5fvvf2EvPthfFvLs4vnz4V9L/y3Gcn9p1Di4oWb7NXlh4Z3DuwcfeiXyquVYe+LF4eX/vuvmk2PjC0jX8DGqH1FX0TAAA="
+    token = "Bearer v^1.1#i^1#p^1#I^3#r^0#f^0#t^H4sIAAAAAAAAAOVYf2wTVRxft26ywCCogEyQ7gYYIXe9u7bX9qBdyn6wwrYWWgZbEPJ692491t6d967bipI0i6KJIRBDVGL4ZaIRMDEmYCIRovwxokiiESKJEc38w6FEYoKiEJnvbmV0kwCyJi6x/zT3fd/3fZ/P532/733v6FxF5ZLtzduvVdkeKj2Qo3OlNhszla6sKF86vay0uryELnCwHcgtzNn7y4aWI5BOafxaiDRVQdDRl04piLeMASKjK7wKkIx4BaQh4g2Bj4VaW3iWonlNVw1VUFOEI9wQIFxe6HWJLj/NSG6Bpr3YqtyKGVcDRIKjXRInCYD2cZLoEfE4QhkYVpABFCNAsDTLkAxL0lyc8fMehmc5ivVwnYSjHepIVhXsQtFE0ILLW3P1Aqx3hwoQgrqBgxDBcKgpFgmFGxrb4sudBbGCeR1iBjAyaOxTvSpCRztIZeDdl0GWNx/LCAJEiHAGR1YYG5QP3QLzAPAtqd1ur4cRWcC5Xa4EgFJRpGxS9TQw7o7DtMgiKVmuPFQM2cjeS1GsRmILFIz8UxsOEW5wmH9rMiAlSzLUA0TjilBHKBolgp1JOQnUFplsl0WorgRpMrq2gUyARIKBUBJI6KElH8f68guNRMvLPG6lelURZVM05GhTjRUQo4bjtXEXaIOdIkpED0mGiajAj2VGNWQ7zU0d2cWMkVTMfYVpLITDerz3DozONgxdTmQMOBph/IAlUYAAmiaLxPhBKxfz6dOHAkTSMDTe6ezt7aV6XZSqdzlZmmacG1pbYkISpgGBfc1aH/GX7z2BlC0qAsQzkcwbWQ1j6cO5igEoXUQQp6DPz+V1HwsrON76D0MBZ+fYiihWhbBuH4S0y8uJXs4LBbYYFRLMJ6nTxAETIEumgd4NDS0FBEgKOM8yaajLIu/ySKzLJ0FS5PwS6fZLEpnwiBzJSBgThImE4Pf9nwrlflM9BgUdGkXJ9aLleVtLrLvPnc6s03r8YitH9yjr9TVRyRlupJPSlnqVW7u+28NGOlxsKHC/1XBH8vUpGSsTx+sXQwCz1osnQrOKDChOiF5MUDUYVVOykJ1cG+zSxSjQjWwMplLYMCGSIU0LF+esLhq9f3lMPBjv4t1R/9H9dEdWyEzZycXKnI9wAKDJlHkDUYKadpq1rgLcfpjmzRbqCfGWcec6qVhjkiNscQpbLSdl0aVQj0DpEKkZHXfbVMTswOJqN1TwfWboaioF9XZmwvWcTmcMkEjByVbYRUhwGUyyy5bhXD4f7id8E+MlWFfp5sl2JBXjKLavfMC22jn2JT9YYv2Yftsxut/2fqnNRjvpRUwtXVNRts5eNq0ayQakZCBRSO5S8LurDqlumNWArJdW2HrnHH/rRMFnhQNP04+NflioLGOmFnxloOfdHilnZsypYhmGpTnG72FYrpOuvT1qZ2bbHz08cO7SS3OmbKyeOa/91ML48FdP7Y/QVaNONlt5ib3fVrKved6NQxJXUXNp1Yw3htyf7Iju6Hjix1dfy86t/BQcXLz17M74t7PezJ1o3Lp6eOW1oy9/vnjJk0s/i2w+/mHX6kzHdfvQ4Oy5H5Rf2LXoqPTd/h3HLvbs+bV6waz+y89sutB4NbngyPWqug0bPw5e/u304vPLxC9qHw54LzXPrNuzrf31G57Dg+81ffn9ud03vn42gGoGhgba3imJP9/y+yuHhY41v5ycMj35c1Plxr7WH/5Yfu6v3Hz0wiOD2r4/33688SOF3V536t2956eyzx2pPLO7dPjium/mc6XM1V2Dq24us794ZuCQk6xZxoOT53/adoQLnE2e3uRc2KueuoJuXjl7cdreOt/B2mHbosGR7fsbNDFj1fARAAA="
     request = requests.get(url, headers={"Authorization": token})
     game_result = []
     result = request.json()
-    print(request.status_code)
+
     if request.status_code == 401:
         return game_result
 
     ebay_item_summary = result['itemSummaries']
 
     for i in ebay_item_summary:
+        #print(i)
+        if(float(i['seller']['feedbackPercentage'])<80):
+            continue
+        if(i['seller']['feedbackScore']<1500):
+            continue
+        if(i['topRatedBuyingExperience']==False):
+            continue
+        if(float(i['price']['value'])<2):
+            continue
         game_data = {
             'title': i['title'],
             'price': float(i['price']['value']),
@@ -29,3 +38,4 @@ def ebay_request(query):
         game_result.append(game_data)
 
     return game_result
+
