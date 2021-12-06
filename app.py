@@ -29,7 +29,7 @@ def index():
 
     platform_filter = request.args.get('platform')
 
-    print(platform_filter)
+    #print(platform_filter)
 
     #Steam API URL
     req = 'https://steamspy.com/api.php'
@@ -39,7 +39,6 @@ def index():
 
     #Steam API Response
     steam_response = requests.get(url=req,params = parameters)
-
     #GOG API Response
     gog_response = requests.get(url=url)
 
@@ -70,6 +69,7 @@ def index():
     endpoint = " "
 
     for game in epic_games:
+
         game_name = game['title']
         game_thumbnail = None
         game_namespace = game['namespace']
@@ -128,7 +128,14 @@ def index():
 
     #GOG API---------------------------------------
     for i in gog_games['products']:
-
+        if(i['isGame'] == False):
+            continue
+        if(i["availability"]["isAvailable"] == False):
+            continue
+        if(i["buyable"]==False):
+            continue
+        if(int(i["rating"])<35):
+            continue
         game_data = {
             'title' : i['title'],
             'price' : float(i['price']['amount']),
@@ -136,13 +143,17 @@ def index():
             'discount' : i['price']['discountPercentage'],
             'store' : 'GOG',
             'link' : ("https://www.gog.com" + i['url']),
-            'thumbnail' : (i['image'] + "_product_tile_398_2x.jpg")
+            'thumbnail' : (i['image'] + "_product_tile_398_2x.jpg"),
+            'genres' : i['genres']
         }
         games_list.append(game_data)
     #----------------------------------------------
 
     #STEAM API-------------------------------------
     for i in steam_games:
+        if(int(steam_games[i]["negative"]) > int(steam_games[i]["negative"])):
+            continue
+
         price1 = float(steam_games[i]['price'])/100
         initial_price = float(steam_games[i]['initialprice'])/100
         discount = int(steam_games[i]['discount'])
@@ -231,14 +242,14 @@ def index():
         games_list
 
 
-    print(games_list)
+    #print(games_list)
     #apply filtering
-    print("plarform :",platform_filter)
+    #print("plarform :",platform_filter)
     if(platform_filter is None or platform_filter =="Select Console"):
         print("there are not any platform filter applied")
         #else if(platform_filter is not None or platform_filter != 'None' or platform_filter != 'none'):
     else:
-        print("applying the platform filter")
+        #print("applying the platform filter")
         new_game_list = []
 
         platform_filter_lower_case = platform_filter.lower()
@@ -246,14 +257,14 @@ def index():
             title_to_search = i['title'].lower()
             #rint(title_to_search.find(platform_filter),"title :",title_to_search)
             if(title_to_search.find(platform_filter_lower_case)>=0):
-                print(i)
+                #print(i)
                 #print(platform_filter,":",title_to_search)
                 new_game_list.append(i)
 
         #database filter query
         harper_data = harperdb_request(q, platform_filter)
         new_game_list+=harper_data
-        print(harper_data)
+        #print(harper_data)
         return render_template('index1.html', games = new_game_list)
 
     return render_template('index1.html', games = games_list)
