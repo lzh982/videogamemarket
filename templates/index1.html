@@ -53,14 +53,14 @@
 
   </div>
   <div class="align-right">
-  <a class = "btn btn-primary my-2" style="float: right;" href= "{{ url_for('low_data') }}" >Click here to go to Low Data Mode</a> </p>
+  <a class = "btn btn-primary my-2" style="float: right;" href= "https://find-game-prices-low-data.herokuapp.com/" >Click here to go to Low Data Mode</a> </p>
   </div>
   <section class="jumbotron text-center">
 
       <i class="fab fa-playstation fa-5x"></i>
       <i class="fab fa-steam fa-5x"></i>
       <i class="fab fa-xbox fa-5x"></i>
-      <div class="container">
+    <div class="container">
 
 
       <h1 class="jumbotron-heading pix">Search Games Across Different Stores</h1>
@@ -76,6 +76,15 @@
               <option value="Wii">Wii</option>
           </select>
       </div>
+      <div class="input-group mb-3">
+          <select name="genre">
+              <option value="Select Genre">Select Genre</option>
+              <option value="Shooting">Shooting</option>
+              <option value="Adventure">Adventure</option>
+              <option value="Sports">Sports</option>
+              <option value="Education">Education</option>
+          </select>
+      </div>
       <p>
         <button type="submit" name="submit" value="search" class="btn btn-primary my-2">Search</button>
 
@@ -86,7 +95,6 @@
       </p>
       </form>
     </div>
-
   </section>
 
   <div class="album py-5 bg-light">
