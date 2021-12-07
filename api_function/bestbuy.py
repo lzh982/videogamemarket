@@ -7,18 +7,26 @@ def bestbuy_request(query):
     best_response = requests.get(bestbuy_url).json()
     bestbuy_products = best_response['products']
     game_result = []
+    #print(best_response)
     for i in bestbuy_products:
+
+        if(i['customerReviewAverage'] is None or float(i['customerReviewAverage']) <4.5):
+            continue
+        if(i['customerReviewCount'] is None or float(i['customerReviewCount'])<30):
+            continue
+        if(float(i['salePrice'])<5):
+            continue
 
         game_data = {
             'title': i['name'],
-            'price': i['regularPrice'],
-            'initialprice': i['salePrice'],
-            'discount' : "some discount",
+            'price':  i['salePrice'],
+            'initialprice': i['regularPrice'],
+            'discount' : int(((i['regularPrice'] - i['salePrice']) / i['regularPrice']) *100),
             'store': 'Bestbuy',
             # 'seller': i['seller_name'],
             'link': i['url'],
             'thumbnail': i["images"][0]['href'],
-            'rating': i['customerReviewAverage'],
+            'rating (out of 5)': i['customerReviewAverage'],
             'reviews': i['customerReviewCount'],
         }
         game_result.append(game_data)
