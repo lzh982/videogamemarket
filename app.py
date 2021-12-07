@@ -68,8 +68,6 @@ def index():
     endpoint = " "
 
     for game in epic_games:
-        if(game['negative']>game['positive']):
-            continue
 
         game_name = game['title']
         game_thumbnail = None

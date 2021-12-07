@@ -18,7 +18,7 @@ def application(query,platform):
     #Parameters for Steam API
     parameters = {"request": "all"}
     platform_filter = platform
-
+    preference = "Select Genre"
     #Stores user search input in q
     q = query
     if type(q) != str:
@@ -174,7 +174,7 @@ def application(query,platform):
         # ebay api
         ebay_data = ebay_request(q)
         #database request
-        harper_data = harperdb_request(q, platform_filter)
+        harper_data = harperdb_request(q, platform_filter, preference)
 
 
         games_list+=harper_data
@@ -254,7 +254,7 @@ def application(query,platform):
                 new_game_list.append(i)
 
         #database filter query
-        harper_data = harperdb_request(q, platform_filter)
+        harper_data = harperdb_request(q, platform_filter,preference)
         new_game_list+=harper_data
         #print(harper_data)
         return new_game_list
@@ -282,6 +282,6 @@ if(ebay_request("witcher")[0]['title']!= ""):
     print("ebay api query successfully")
 if(walmart_request("demon soul")[0]['store'] == 'Walmart'):
     print("walmart api query successfully")
-if(harperdb_request("sport", "wii")[0]['title'] == "Wii Sports"):
+if(harperdb_request("sport", "wii","Select Genre")[0]['title'] == "Wii Sports"):
     print("harper db query successfully")
 
