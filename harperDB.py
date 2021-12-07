@@ -11,7 +11,7 @@ db = harperdb.HarperDB(
 
 
 
-def harperdb_request(query, platform):
+def harperdb_request(query, platform, preference):
     game_result = []
 #    harper_query = query
     harper_query = query.upper()
@@ -20,20 +20,34 @@ def harperdb_request(query, platform):
 #    print(query_console)
 #    print("select * from video_game.video_game where upper(title) like '" + varTemp + harper_query + varTemp + "' AND upper(console) = '" + query_console + "'")
     print(harper_query)
-  
-    if platform == "Select Console":
-        database_games = db.sql("select * from video_game.video_game_2 where upper(title) like '" + varTemp + harper_query + varTemp + "'")
-    elif harper_query == "":
-        query_console = platform
-        database_games = db.sql("select * from video_game.video_game_2 where console = '" + query_console + "'")
-        print(db.sql("select * from video_game.video_game_2 where console = '" + query_console + "'"))
+    preference = preference.upper()
+#    if platform == "None":
+#        return ""
+#    else:
+    if preference != "SELECT GENRE":
+        database_games = db.sql("select * from video_game.seller where upper(genre) = '"
+         + preference + "'")
+        print(preference + " in genre")
+        print(database_games)
     else:
-        query_console = platform.upper()
-        database_games = db.sql("select * from video_game.video_game_2 where upper(title) like '"
-        + varTemp + harper_query + varTemp + "' AND upper(console) = '" + query_console + "'")
+        print("other queries")
+        if platform == "Select Console":
+            database_games = db.sql("select * from video_game.seller where upper(title) like '" +
+                varTemp + harper_query + varTemp + "'")
+            print(database_games)
+        elif harper_query == "":
+            query_console = platform.upper()
+            database_games = db.sql("select * from video_game.seller where upper(console) = '" + query_console + "'")
+        #        database_games = "nothing"
+            print(db.sql("select * from video_game.seller where upper(console) = '"+ query_console +"'"))
+        else:
+            query_console = platform.upper()
+            database_games = db.sql("select * from video_game.seller where upper(title) like '"
+                + varTemp + harper_query + varTemp + "' AND upper(console) = '" + query_console + "'")
+        # contains(title, '" + harper_query + "'")
+        #" WHERE title = '" + harper_query + "'") # where title =" + harper_query)
+            print(database_games)
 
-    # contains(title, '" + harper_query + "'")
-    #" WHERE title = '" + harper_query + "'") # where title =" + harper_query)
     for i in database_games:
         if harper_query in i['title'].upper() or harper_query == i['title'].upper():
 #            print(query_console)
@@ -45,9 +59,7 @@ def harperdb_request(query, platform):
                     'price' : i['price'],
                     'initialprice' : i['initial_price'],
                     'discount' : i['discount'],
-
                     'store' : 'amazon',
-
                     'link' : i['website'],
                     'thumbnail' : i['image'],
                     'seller' : i['seller_rating'],
@@ -60,9 +72,7 @@ def harperdb_request(query, platform):
                     'price' : i['price'],
                     'initialprice' : i['initial_price'],
                     'discount' : i['discount'],
-
                     'store' : 'amazon',
-
                     'thumbnail' : i['image'],
                     'seller' : i['seller_rating'],
                     'console' : i['console'],
@@ -72,14 +82,15 @@ def harperdb_request(query, platform):
 
     return game_result;
 
-"""
-def preference_tag_request(query1){
+
+def genre_request(query1):
     game_result = []
-#    database_games = db.sql("select * from video_game.video_game_2 where genre = '"
-#     + insert_preference_tag_name + "'")
-
+    query1 = query1.upper()
+    database_games = db.sql("select * from video_game.seller where upper(genre) = '"
+     + query1 + "'")
+    print(database_games)
     for i in database_games:
-        if harper_query in i['title'].upper() or harper_query == i['title'].upper():
+        if harper_query in i['genre'].upper() or query1 == i['genre'].upper():
 #            print(query_console)
 #            print(i['seller_rating'])
             if i['seller_rating'] >= 80:
@@ -113,11 +124,9 @@ def preference_tag_request(query1){
     return game_result;
 
 
-}
-"""
+
 
 #print(harperdb_request('', 'PS4'))
-
 
 
 
