@@ -122,8 +122,8 @@ def index():
             'thumbnail' : game_thumbnail,
             'console' : "PC"
         }
-
-        games_list.append(game_data)
+        if(preference == "Select Genre"):
+            games_list.append(game_data)
     #----------------------------------------------
 
     #GOG API---------------------------------------
@@ -147,7 +147,8 @@ def index():
             'genres' : i['genres'],
             'console': "PC"
         }
-        games_list.append(game_data)
+        if(preference == "Select Genre"):
+            games_list.append(game_data)
     #----------------------------------------------
 
     #STEAM API-------------------------------------
@@ -170,7 +171,8 @@ def index():
             'thumbnail' : ('https://cdn.cloudflare.steamstatic.com/steam/apps/' + str(steam_games[i]['appid']) + '/header.jpg'),
             'console': "PC"
         }
-        games_list.append(game_data)
+        if(preference == "Select Genre"):
+            games_list.append(game_data)
 
     if platform_filter == "PC":
         return render_template('index1.html', games = games_list)
