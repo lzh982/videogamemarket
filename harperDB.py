@@ -65,6 +65,8 @@ def harperdb_request(query, platform, preference):
                     'seller' : i['seller_rating'],
                     'console' : i['console']
                 }
+                game_result.append(game_data_2)
+
             else:
 #                print("inside else statement")
                 game_data_2 = {
@@ -78,7 +80,7 @@ def harperdb_request(query, platform, preference):
                     'console' : i['console'],
                     'bad_seller': "Unverified seller"
                 }
-        game_result.append(game_data_2)
+                game_result.append(game_data_2)
 
     return game_result;
 

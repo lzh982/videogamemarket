@@ -23,9 +23,9 @@ def index():
     q = request.args.get('query')
     if type(q) != str:
         q = ""
-
     platform_filter = request.args.get('platform')
     preference = request.args.get('genre')
+
 
     # Steam API URL
     req = 'https://steamspy.com/api.php'
@@ -123,6 +123,7 @@ def index():
                     games_list.append(game_data)
             else :
                 games_list.append(game_data)
+
     # ----------------------------------------------
 
     # GOG API---------------------------------------
@@ -186,7 +187,7 @@ def index():
     if platform_filter == "PC":
         return render_template('index1.html', games=games_list)
 
-    if q:
+    if q and preference == "Select Genre":
         # walmart API
         walmart_data = walmart_request(q)
         # best buy API
@@ -195,12 +196,24 @@ def index():
         ebay_data = ebay_request(q)
         # database request
         print("search valid")
+        temp_q = q
+        if (len(q) > 0):
+            q = ""
         harper_data = harperdb_request(q, platform_filter, preference)
+        q = temp_q
+        if (len(q) > 0 and preference != "Select Genre"):
+            title_to_search = game_data['title'].lower()
+            if (title_to_search.find(q) > 0):
+                games_list.append(game_data)
 
         games_list += harper_data
         games_list += walmart_data
         games_list += bestbuy_data
         games_list += ebay_data
+    elif preference and preference != "Select Genre":
+        print("preference")
+        harper_data = harperdb_request(q, platform_filter, preference)
+        games_list += harper_data
 
     # harperDb
     #    if q:
@@ -253,10 +266,9 @@ def index():
 
     if (platform_filter is None or platform_filter == "Select Console"):
         print("there are not any platform filter applied")
-        if preference and preference != "Select Genre":
-            print("preference")
-            harper_data = harperdb_request(q, platform_filter, preference)
-            games_list += harper_data
+        title_to_search = game_data['title'].lower()
+        if (title_to_search.find(q) > 0):
+            games_list.append(game_data)
     else:
         # print("applying the platform filter")
         new_game_list = []
