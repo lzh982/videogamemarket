@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Gamers Guild</title>
+
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico" />
+
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/static/styles.css" rel="stylesheet" />
+    <!-- Bootstrap core CSS -->
+     <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+    <style>
+    .logo-image{
+       width: auto;
+       height: auto;
+       border-radius: 100%;
+       overflow: hidden;
+       object-fit: contain;
+       margin-top: -6px;
+    }
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    header{
+      /* min-height:800px; */
+      height:500px;
+    }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+      .align-right {
+        margin-right: 20px;
+      }
+      img{
+        max-height: 175px;
+        max-width: 310px;
+        width: auto;
+      }
+
+      .pix{
+        font-family: 'VT323', monospace;
+      }
+      .button2 {background-color: #4CAF50;}
+
+      div.d {
+        line-height: 100px;
+      }
+
+      input-group {
+        width: 800px;
+      }
+
+      form {
+        width: auto;
+        margin: auto;
+        margin-top: auto;
+      }
+      input {
+        padding: 4px 10px;
+        border: 0;
+        font-size: 16px;
+      }
+      .search {
+        width: 100%;
+      }
+      .submit {
+        width: 70px;
+        background-color: #1c87c9;
+        color: #ffffff;
+      }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='album.css') }}" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/01b1163e8f.js" crossorigin="anonymous"></script>
+
+  </head>
+
+  <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="z-index: 3;">
+        <div class="container px-4 px-lg-5">
+            <!-- <a class="navbar-brand" href="#!">Start Bootstrap</a> -->
+            <a class="navbar-brand" href="#" style="max-width: 30%;">
+              <!-- Logo -->
+              <div class="logo-image">
+                <img src="/static/assets/LogoFull.png" class="img-fluid">
+              </div>
+            </a>
+
+
+          <form method="GET" class="form-inline" align="center">
+            <a class>
+              <div class="input-group mb-3 topnav ">
+                  <!-- <button type="submit" name="submit" value="search" class="btn btn-primary my-2" align="right">Search</button> -->
+              </div>
+
+            </a>
+          </form>
+
+        <!-- Wishlist -->
+          <div class="collapse navbar-collapse align-right" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4"></ul>
+              <form class="d-flex">
+                  <button class="btn btn-outline-light" type="submit">
+                      <!-- <i class="bi-cart-fill me-1"></i> -->
+                      <i class="bi-heart me-1"></i>
+                      Wishlist
+                      <!-- <span class="badge bg-dark text-white ms-1 rounded-pill">0</span> -->
+                  </button>
+              </form>
+          </div>
+        </div>
+    </nav>
+
+  <!-- Header-->
+  <div class="bg-indigo py-5">
+      <div class="container centered">
+          <div class="text-center text-dark">
+              <br>
+              <br>
+              <div class="typewriter d">
+                <br>
+                  <h1 class="display-5">No result found, please try again. :(
+                  </h1>
+
+                  <!--<p class="lead fw-normal text-blue-50 mb-0 display-5">get the lowest prices on all your favorite games</p>-->
+
+              </div>
+              <!--<h1 class="display-5">&#127918;</h1> -->
+              <!-- Search Bar -->
+              </div>
+              <!-- <p class="lead fw-normal text-blue-50 mb-0">With this shop hompeage template</p> -->
+          </div>
+
+
+      </div>
+
+  </div>
+
+<body>
+<main class="bg-indigo" role="main">
+
+  <div class="align-right">
+  <!-- <a class = "btn btn-primary my-2" style="float: right;" href= "https://find-game-prices-low-data.herokuapp.com/" >Click here to go to High Data Mode</a> </p> -->
+  </div>
+  <sectiosn class="jumbotron text-center">
+
+    <div class="container input-group mb-3">
+      <!-- <h1 class="jumbotron-heading pix">Search Games Across Different Stores</h1>
+      <p class="lead text-muted pix">Get the lowest prices for your searched game</p> -->
+      <form method="GET">
+      <div class="input-group mb-3">
+        <input type="text" name="query" class="form-control" style="width: 300px; height: auto" placeholder="search your games here">
+
+      </div>
+
+
+      <p style="z-index: -1;">
+         <select name="platform" style=" height: 40px">
+              <option value="Select Console">Select Console</option>
+              <option value="PS4">PS4</option>
+              <option value="Nintendo Switch">Nintendo Switch</option>
+              <option value="Xbox One">Xbox One</option>
+              <option value="Wii">Wii</option>
+          </select>
+          <select name="genre" style=" height: 40px">
+              <option value="Select Genre">Select Genre</option>
+              <option value="Shooting">Shooting</option>
+              <option value="Adventure">Adventure</option>
+              <option value="Sports">Sports</option>
+              <option value="Education">Education</option>
+          </select>
+          <button type="submit" name="submit" value="search" class="btn btn-primary my-2">Search</button>
+
+        <br>
+          <!--
+        <button type="preference" name="submit" value="search" class="button button2">Preference</button>
+        <button type="preference" name="submit" value="search" class="button button2">Shooting</button>
+        <button type="preference" name="submit" value="search" class="button button2">Sports</button>
+        -->
+      </p>
+      </form>
+    </div>
+  </sectiosn>
+
+  <div class="album py-5  bg-indigo">
+    <div class="container">
+      <div class="row">
+        {% for game in games %}
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <div class="card-body bg-light" >
+              <center><img src={{game.thumbnail}} alt={{game.title}} ></center>
+              <p></p>
+              <h5><b class="card-text">{{ game.title}}</b></h5>
+              <b class="card-text">Price: ${{game.price}}</b>
+              <p></p>
+              <p class="card-text">Discount: {{game.discount}}%</p>
+              <p class="card-text">Intial price: ${{game.initialprice}}</p>
+              {% if game.rating%}
+                <p class="card-text">Game rating: {{game.rating}}</p>
+              {% endif %}
+              {% if game.seller%}
+                <p class="card-text">Seller: {{game.seller}}</p>
+              {% endif %}
+              {% if game.rating_percentage%}
+                <p class="card-text">Seller rating: {{game.rating_percentage}}</p>
+              {% endif %}
+              {% if game.console%}
+                <p class="card-text">Console: {{game.console}}</p>
+              {% endif %}
+              {% if game.bad_seller%}
+                <p class="card-text">Bad Seller: {{game.bad_seller}}</p>
+              {% endif %}
+              <center><a class = "btn btn-primary my-2" href= {{game.link}} target="_blank">Purchase Game from {{game.store}}</a> </p></center>
+              <div class="d-flex justify-content-between align-items-center">
+
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+</main>
+</body>
+</html>

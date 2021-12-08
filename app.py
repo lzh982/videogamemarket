@@ -265,11 +265,17 @@ def index():
                 new_game_list.append(i)
 
         #database filter query
-        harper_data = harperdb_request(q, platform_filter)
+        harper_data = harperdb_request(q, platform_filter,preference)
         new_game_list+=harper_data
         #print(harper_data)
+        if(len(new_game_list)==0):
+
+            return render_template('no_result.html', games=new_game_list)
+
         return render_template('index1.html', games = new_game_list)
 
+    if(len(games_list)==0):
+        return render_template('no_result.html',games = games_list)
      
     return render_template('index1.html', games = games_list)
 
