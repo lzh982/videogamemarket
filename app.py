@@ -117,7 +117,12 @@ def index():
             'console': "PC"
         }
         if (preference is None or preference == "Select Genre"):
-            games_list.append(game_data)
+            if(platform_filter == "PC"):
+                title_to_search = game_data['title'].lower()
+                if (title_to_search.find(q) > 0):
+                    games_list.append(game_data)
+            else :
+                games_list.append(game_data)
     # ----------------------------------------------
 
     # GOG API---------------------------------------
@@ -142,8 +147,12 @@ def index():
             'console': "PC"
         }
         if (preference is None or preference == "Select Genre"):
-            games_list.append(game_data)
-    # ----------------------------------------------
+            if(platform_filter == "PC"):
+                title_to_search = game_data['title'].lower()
+                if (title_to_search.find(q) > 0):
+                    games_list.append(game_data)
+            else :
+                games_list.append(game_data)    # ----------------------------------------------
 
     # STEAM API-------------------------------------
     for i in steam_games:
@@ -167,7 +176,12 @@ def index():
             'console': "PC"
         }
         if (preference is None or preference == "Select Genre"):
-            games_list.append(game_data)
+            if(platform_filter == "PC"):
+                title_to_search = game_data['title'].lower()
+                if (title_to_search.find(q) > 0):
+                    games_list.append(game_data)
+            else :
+                games_list.append(game_data)
 
     if platform_filter == "PC":
         return render_template('index1.html', games=games_list)
