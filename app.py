@@ -122,8 +122,9 @@ def index():
             'thumbnail' : game_thumbnail,
             'console' : "PC"
         }
-        if(preference == "Select Genre"):
-            games_list.append(game_data)
+
+    if(preference is None or preference == "Select Genre"):
+        games_list.append(game_data)
     #----------------------------------------------
 
     #GOG API---------------------------------------
@@ -147,8 +148,8 @@ def index():
             'genres' : i['genres'],
             'console': "PC"
         }
-        if(preference == "Select Genre"):
-            games_list.append(game_data)
+    if(preference is None or preference == "Select Genre"):
+        games_list.append(game_data)
     #----------------------------------------------
 
     #STEAM API-------------------------------------
@@ -171,8 +172,8 @@ def index():
             'thumbnail' : ('https://cdn.cloudflare.steamstatic.com/steam/apps/' + str(steam_games[i]['appid']) + '/header.jpg'),
             'console': "PC"
         }
-        if(preference == "Select Genre"):
-            games_list.append(game_data)
+    if(preference is None or preference == "Select Genre"):
+        games_list.append(game_data)
 
     if platform_filter == "PC":
         return render_template('index1.html', games = games_list)
@@ -232,8 +233,8 @@ def index():
     #games_list = sorted(games_list, key = lambda i: i['price'])
     #Implements Search Functionality
     for i in games_list:
-        i['price']=format(i['price'],".2f")
-        i['initialprice']=format(i['initialprice'],".2f")
+        i['price']=format(float(i['price']),".2f")
+        i['initialprice']=format(float(i['initialprice']),".2f")
 
     if q:
         games_list = [games for games in games_list if q.lower() in games['title'].lower()]

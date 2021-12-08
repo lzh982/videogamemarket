@@ -29,6 +29,7 @@ def ebay_request(query):
             'title': i['title'],
             'price': float(i['price']['value']),
             'initialprice': float(i['price']['value']),
+            'discount': 0,
             'store': 'Ebay',
             'link': i['itemWebUrl'],
             'thumbnail': i['thumbnailImages'][0]['imageUrl'],
