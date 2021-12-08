@@ -10,60 +10,57 @@ from harperDB import harperdb_request
 import harperdb
 from api_function.ebay import ebay_request
 
-
-
 app = Flask(__name__)
 
-@app.route('/',methods = ['GET','POST'])
-def index():
 
+@app.route('/', methods=['GET', 'POST'])
+def index():
     games_list = []
-    #Parameters for Steam API
+    # Parameters for Steam API
     parameters = {"request": "all"}
 
-    #Stores user search input in q
+    # Stores user search input in q
     q = request.args.get('query')
     if type(q) != str:
-        q =""
+        q = ""
 
     platform_filter = request.args.get('platform')
     preference = request.args.get('genre')
 
-
-    #Steam API URL
+    # Steam API URL
     req = 'https://steamspy.com/api.php'
 
-    #GOG API URL
-    url = "https://embed.gog.com/games/ajax/filtered?mediaType=game&search="+q
+    # GOG API URL
+    url = "https://embed.gog.com/games/ajax/filtered?mediaType=game&search=" + q
 
-    #Steam API Response
-    steam_response = requests.get(url=req,params = parameters)
-    #GOG API Response
+    # Steam API Response
+    steam_response = requests.get(url=req, params=parameters)
+    # GOG API Response
     gog_response = requests.get(url=url)
 
-    #Loads API responses into json dictionary
+    # Loads API responses into json dictionary
     steam_games = json.loads(steam_response.content)
     gog_games = json.loads(gog_response.content)
 
-    #EPIC Games API ---------------------------
+    # EPIC Games API ---------------------------
     presentiso = datetime.now()
     present = presentiso.strftime("%Y-%m-%d")
 
-    #Calls EPIC API
+    # Calls EPIC API
     api = EpicGamesStoreAPI()
 
-    #Retrieves endpoint for games in EPIC store
+    # Retrieves endpoint for games in EPIC store
     slug_dict = api.get_product_mapping()
 
-    #Retrieves games/bundles from EPIC store
+    # Retrieves games/bundles from EPIC store
     epic_games = api.fetch_store_games(
         product_type='games/edition/base|bundles/games|editors',
         count=15,
         sort_by='releaseDate',
         sort_dir='DESC',
-        release_date="[,"+present+"]",
-        keywords = q,
-        with_price = True
+        release_date="[," + present + "]",
+        keywords=q,
+        with_price=True
     )['data']['Catalog']['searchStore']['elements']
     endpoint = " "
 
@@ -73,168 +70,160 @@ def index():
         game_thumbnail = None
         game_namespace = game['namespace']
 
-        #Retrieves url for thumbnail
+        # Retrieves url for thumbnail
         for image in game['keyImages']:
             if image['type'] == 'OfferImageWide':
                 game_thumbnail = image['url']
 
-
         game_oprice = game['price']['totalPrice']['fmtPrice']['originalPrice']
-        game_oprice = game_oprice.replace('$','')
+        game_oprice = game_oprice.replace('$', '')
         game_dprice = game['price']['totalPrice']['fmtPrice']['discountPrice']
-        game_dprice = game_dprice.replace('$','')
+        game_dprice = game_dprice.replace('$', '')
         game_oprice = float(game_oprice)
         game_dprice = float(game_dprice)
         game_dev = game['seller']['name']
 
-        #Calculates Discount in percent
+        # Calculates Discount in percent
         try:
-            discount = round(((game_oprice-game_dprice)/game_oprice)*100,0)
+            discount = round(((game_oprice - game_dprice) / game_oprice) * 100, 0)
         except ZeroDivisionError:
             discount = 0
 
-        #Creating URL for EPIC store games
+        # Creating URL for EPIC store games
         try:
             if game_namespace in slug_dict:
                 game_slug = slug_dict[game_namespace]
                 epic_url = "https://www.epicgames.com/store/en-US/p/" + game_slug
-            #If not in slug_dict, then assume it is a bundle
+            # If not in slug_dict, then assume it is a bundle
             else:
-                #Replaces spaces with hyphens
-                endpoint = game_name.replace(" ","-").lower()
-                #Removes Trademark Symbol (if present)
+                # Replaces spaces with hyphens
+                endpoint = game_name.replace(" ", "-").lower()
+                # Removes Trademark Symbol (if present)
                 endpoint = endpoint.replace(u"\u2122", '')
                 epic_url = "https://www.epicgames.com/store/en-US/bundles/" + endpoint
 
         except:
-            #If link not found, redirects to home page of EPIC games
+            # If link not found, redirects to home page of EPIC games
             epic_url = "https://www.epicgames.com/store/en-US/"
-
-
 
         game_data = {
             'title': game_name,
             'price': game_dprice,
-            'initialprice' : game_oprice,
-            'discount' : discount,
-            'store' : 'Epic Games',
-            'link' : epic_url,
-            'thumbnail' : game_thumbnail,
-            'console' : "PC"
-        }
-
-    if(preference is None or preference == "Select Genre"):
-        games_list.append(game_data)
-    #----------------------------------------------
-
-    #GOG API---------------------------------------
-    for i in gog_games['products']:
-        if(i['isGame'] == False):
-            continue
-        if(i["availability"]["isAvailable"] == False):
-            continue
-        if(i["buyable"]==False):
-            continue
-        if(int(i["rating"])<35):
-            continue
-        game_data = {
-            'title' : i['title'],
-            'price' : float(i['price']['amount']),
-            'initialprice' : float(i['price']['baseAmount']),
-            'discount' : i['price']['discountPercentage'],
-            'store' : 'GOG',
-            'link' : ("https://www.gog.com" + i['url']),
-            'thumbnail' : (i['image'] + "_product_tile_398_2x.jpg"),
-            'genres' : i['genres'],
+            'initialprice': game_oprice,
+            'discount': discount,
+            'store': 'Epic Games',
+            'link': epic_url,
+            'thumbnail': game_thumbnail,
             'console': "PC"
         }
-    if(preference is None or preference == "Select Genre"):
-        games_list.append(game_data)
-    #----------------------------------------------
 
-    #STEAM API-------------------------------------
+        games_list.append(game_data)
+    # ----------------------------------------------
+
+    # GOG API---------------------------------------
+    for i in gog_games['products']:
+        if (i['isGame'] == False):
+            continue
+        if (i["availability"]["isAvailable"] == False):
+            continue
+        if (i["buyable"] == False):
+            continue
+        if (int(i["rating"]) < 35):
+            continue
+        game_data = {
+            'title': i['title'],
+            'price': float(i['price']['amount']),
+            'initialprice': float(i['price']['baseAmount']),
+            'discount': i['price']['discountPercentage'],
+            'store': 'GOG',
+            'link': ("https://www.gog.com" + i['url']),
+            'thumbnail': (i['image'] + "_product_tile_398_2x.jpg"),
+            'genres': i['genres'],
+            'console': "PC"
+        }
+        games_list.append(game_data)
+    # ----------------------------------------------
+
+    # STEAM API-------------------------------------
     for i in steam_games:
-        if(int(steam_games[i]["negative"]) > int(steam_games[i]["negative"])):
+        if (int(steam_games[i]["negative"]) > int(steam_games[i]["negative"])):
             continue
 
-        price1 = float(steam_games[i]['price'])/100
-        initial_price = float(steam_games[i]['initialprice'])/100
+        price1 = float(steam_games[i]['price']) / 100
+        initial_price = float(steam_games[i]['initialprice']) / 100
         discount = int(steam_games[i]['discount'])
 
         game_data = {
-            'appid' : steam_games[i]['appid'],
-            'title' : steam_games[i]['name'],
-            'price' : price1,
-            'initialprice' : initial_price,
-            'discount' : discount,
-            'store' : 'Steam',
-            'link' : ("https://store.steampowered.com/app/" + str(steam_games[i]['appid'])),
-            'thumbnail' : ('https://cdn.cloudflare.steamstatic.com/steam/apps/' + str(steam_games[i]['appid']) + '/header.jpg'),
+            'appid': steam_games[i]['appid'],
+            'title': steam_games[i]['name'],
+            'price': price1,
+            'initialprice': initial_price,
+            'discount': discount,
+            'store': 'Steam',
+            'link': ("https://store.steampowered.com/app/" + str(steam_games[i]['appid'])),
+            'thumbnail': ('https://cdn.cloudflare.steamstatic.com/steam/apps/' + str(
+                steam_games[i]['appid']) + '/header.jpg'),
             'console': "PC"
         }
-    if(preference is None or preference == "Select Genre"):
         games_list.append(game_data)
 
     if platform_filter == "PC":
-        return render_template('index1.html', games = games_list)
-
+        return render_template('index1.html', games=games_list)
 
     if q:
-        #walmart API
+        # walmart API
         walmart_data = walmart_request(q)
         # best buy API
         bestbuy_data = bestbuy_request(q)
         # ebay api
         ebay_data = ebay_request(q)
-        #database request
+        # database request
         print("search valid")
         harper_data = harperdb_request(q, platform_filter, preference)
 
+        games_list += harper_data
+        games_list += walmart_data
+        games_list += bestbuy_data
+        games_list += ebay_data
 
-        games_list+=harper_data
-        games_list+=walmart_data
-        games_list+=bestbuy_data
-        games_list+=ebay_data
+    # harperDb
+    #    if q:
+    #        harper_data = harperdb_request(q)
+    #        games_list+=harper_data
 
+    #    db = harperdb.HarperDB(
+    #        url="https://videogames-videomarket.harperdbcloud.com",
+    #        username="video_game_market",
+    #        password="video_game_market"
+    #    )
+    #    print('hello')
+    #    if __name__ == "__main__":
+    #        app.run(debug=True)
+    # print(db.describe_all())
+    #        database_games = db.sql("select * from video_game.video_game_api_2")
 
-#harperDb
-#    if q:
-#        harper_data = harperdb_request(q)
-#        games_list+=harper_data
+    #        for i in database_games:
+    #            print(i['title'])
+    #            game_data_2 = {
+    #                'title' : i['title'],
+    #                'price' : i['price'],
+    # 'initialprice' : 12,
+    # 'discount' : 0,
+    # 'store' : 'VGM',
+    # 'link' : "google.com",
+    #                'thumbnail' : i['image_url']
 
-#    db = harperdb.HarperDB(
-#        url="https://videogames-videomarket.harperdbcloud.com",
-#        username="video_game_market",
-#        password="video_game_market"
-#    )
-#    print('hello')
-#    if __name__ == "__main__":
-#        app.run(debug=True)
-        #print(db.describe_all())
-#        database_games = db.sql("select * from video_game.video_game_api_2")
+    #            }
+    #            games_list.append(game_data_2)
 
-#        for i in database_games:
-#            print(i['title'])
-#            game_data_2 = {
-#                'title' : i['title'],
-#                'price' : i['price'],
-                #'initialprice' : 12,
-                #'discount' : 0,
-                #'store' : 'VGM',
-                #'link' : "google.com",
-#                'thumbnail' : i['image_url']
-
-#            }
-#            games_list.append(game_data_2)
-
-    #----------------------------------------------
+    # ----------------------------------------------
     games_list.sort(key=itemgetter("price"))
 
-    #games_list = sorted(games_list, key = lambda i: i['price'])
-    #Implements Search Functionality
+    # games_list = sorted(games_list, key = lambda i: i['price'])
+    # Implements Search Functionality
     for i in games_list:
-        i['price']=format(float(i['price']),".2f")
-        i['initialprice']=format(float(i['initialprice']),".2f")
+        i['price'] = format(i['price'], ".2f")
+        i['initialprice'] = format(i['initialprice'], ".2f")
 
     if q:
         games_list = [games for games in games_list if q.lower() in games['title'].lower()]
@@ -242,96 +231,93 @@ def index():
     else:
         games_list
 
+    # print(games_list)
+    # apply filtering
+    # print("plarform :",platform_filter)
 
-    #print(games_list)
-    #apply filtering
-    #print("plarform :",platform_filter)
-
-        
-    if(platform_filter is None or platform_filter =="Select Console"):
+    if (platform_filter is None or platform_filter == "Select Console"):
         print("there are not any platform filter applied")
         if preference and preference != "Select Genre":
-          print("preference")
-          harper_data = harperdb_request(q, platform_filter, preference)
-          games_list += harper_data
+            print("preference")
+            harper_data = harperdb_request(q, platform_filter, preference)
+            games_list += harper_data
     else:
-        #print("applying the platform filter")
+        # print("applying the platform filter")
         new_game_list = []
 
         platform_filter_lower_case = platform_filter.lower()
         for i in games_list:
             title_to_search = i['title'].lower()
-            #rint(title_to_search.find(platform_filter),"title :",title_to_search)
-            if(title_to_search.find(platform_filter_lower_case)>=0):
-                #print(i)
-                #print(platform_filter,":",title_to_search)
+            # rint(title_to_search.find(platform_filter),"title :",title_to_search)
+            if (title_to_search.find(platform_filter_lower_case) >= 0):
+                # print(i)
+                # print(platform_filter,":",title_to_search)
                 new_game_list.append(i)
 
-        #database filter query
-        harper_data = harperdb_request(q, platform_filter,preference)
-        new_game_list+=harper_data
-        #print(harper_data)
-        if(len(new_game_list)==0):
-
+        # database filter query
+        harper_data = harperdb_request(q, platform_filter, preference)
+        new_game_list += harper_data
+        # print(harper_data)
+        if (len(new_game_list) == 0):
             return render_template('no_result.html', games=new_game_list)
 
-        return render_template('index1.html', games = new_game_list)
+        return render_template('index1.html', games=new_game_list)
 
-    if(len(games_list)==0):
-        return render_template('no_result.html',games = games_list)
-     
-    return render_template('index1.html', games = games_list)
+    if (len(games_list) == 0):
+        return render_template('no_result.html', games=games_list)
 
-@app.route('/withoutebay',methods = ['GET','POST'])
+    return render_template('index1.html', games=games_list)
+
+
+@app.route('/withoutebay', methods=['GET', 'POST'])
 def withoutebay():
-
     games_list = []
-    #Parameters for Steam API
+    # Parameters for Steam API
     parameters = {"request": "all"}
 
-    #Stores user search input in q
+    # Stores user search input in q
     q = request.args.get('query')
     platform_filter = request.args.get('platform')
 
     print(platform_filter)
     if type(q) != str:
-        q =""
+        q = ""
 
-    #Steam API URL
+    # Steam API URL
     req = 'https://steamspy.com/api.php'
 
-    #GOG API URL
-    url = "https://embed.gog.com/games/ajax/filtered?mediaType=game&search="+q
+    # GOG API URL
+    url = "https://embed.gog.com/games/ajax/filtered?mediaType=game&search=" + q
 
-    #Steam API Response
-    steam_response = requests.get(url=req,params = parameters)
+    # Steam API Response
+    steam_response = requests.get(url=req, params=parameters)
 
-    #GOG API Response
+    # GOG API Response
     gog_response = requests.get(url=url)
 
-    #Loads API responses into json dictionary
+    # Loads API responses into json dictionary
     steam_games = json.loads(steam_response.content)
     gog_games = json.loads(gog_response.content)
 
-    #EPIC Games API ---------------------------
+    # EPIC Games API ---------------------------
     presentiso = datetime.now()
     present = presentiso.strftime("%Y-%m-%d")
 
-    #Calls EPIC API
+    # Calls EPIC API
     api = EpicGamesStoreAPI()
 
-    #Retrieves endpoint for games in EPIC store
+    # Retrieves endpoint for games in EPIC store
     slug_dict = api.get_product_mapping()
 
-    #Retrieves games/bundles from EPIC store
+    # Retrieves games/bundles from EPIC store
     epic_games = api.fetch_store_games(
         product_type='games/edition/base|bundles/games|editors',
         count=15,
         sort_by='releaseDate',
         sort_dir='DESC',
-        release_date="[,"+present+"]",
-        keywords = q,
-        with_price = True
+        release_date="[," + present + "]",
+        keywords=q,
+        with_price=True
     )['data']['Catalog']['searchStore']['elements']
     endpoint = " "
 
@@ -340,117 +326,112 @@ def withoutebay():
         game_thumbnail = None
         game_namespace = game['namespace']
 
-        #Retrieves url for thumbnail
+        # Retrieves url for thumbnail
         for image in game['keyImages']:
             if image['type'] == 'OfferImageWide':
                 game_thumbnail = image['url']
 
-
         game_oprice = game['price']['totalPrice']['fmtPrice']['originalPrice']
-        game_oprice = game_oprice.replace('$','')
+        game_oprice = game_oprice.replace('$', '')
         game_dprice = game['price']['totalPrice']['fmtPrice']['discountPrice']
-        game_dprice = game_dprice.replace('$','')
+        game_dprice = game_dprice.replace('$', '')
         game_oprice = float(game_oprice)
         game_dprice = float(game_dprice)
         game_dev = game['seller']['name']
 
-        #Calculates Discount in percent
+        # Calculates Discount in percent
         try:
-            discount = round(((game_oprice-game_dprice)/game_oprice)*100,0)
+            discount = round(((game_oprice - game_dprice) / game_oprice) * 100, 0)
         except ZeroDivisionError:
             discount = 0
 
-        #Creating URL for EPIC store games
+        # Creating URL for EPIC store games
         try:
             if game_namespace in slug_dict:
                 game_slug = slug_dict[game_namespace]
                 epic_url = "https://www.epicgames.com/store/en-US/p/" + game_slug
-            #If not in slug_dict, then assume it is a bundle
+            # If not in slug_dict, then assume it is a bundle
             else:
-                #Replaces spaces with hyphens
-                endpoint = game_name.replace(" ","-").lower()
-                #Removes Trademark Symbol (if present)
+                # Replaces spaces with hyphens
+                endpoint = game_name.replace(" ", "-").lower()
+                # Removes Trademark Symbol (if present)
                 endpoint = endpoint.replace(u"\u2122", '')
                 epic_url = "https://www.epicgames.com/store/en-US/bundles/" + endpoint
 
         except:
-            #If link not found, redirects to home page of EPIC games
+            # If link not found, redirects to home page of EPIC games
             epic_url = "https://www.epicgames.com/store/en-US/"
-
-
 
         game_data = {
             'title': game_name,
             'price': game_dprice,
-            'initialprice' : game_oprice,
-            'discount' : discount,
-            'store' : 'Epic Games',
-            'link' : epic_url,
-            'thumbnail' : game_thumbnail
+            'initialprice': game_oprice,
+            'discount': discount,
+            'store': 'Epic Games',
+            'link': epic_url,
+            'thumbnail': game_thumbnail
         }
 
         games_list.append(game_data)
-    #----------------------------------------------
+    # ----------------------------------------------
 
-    #GOG API---------------------------------------
+    # GOG API---------------------------------------
     for i in gog_games['products']:
-
         game_data = {
-            'title' : i['title'],
-            'price' : float(i['price']['amount']),
-            'initialprice' : float(i['price']['baseAmount']),
-            'discount' : i['price']['discountPercentage'],
-            'store' : 'GOG',
-            'link' : ("https://www.gog.com" + i['url']),
-            'thumbnail' : (i['image'] + "_product_tile_398_2x.jpg")
+            'title': i['title'],
+            'price': float(i['price']['amount']),
+            'initialprice': float(i['price']['baseAmount']),
+            'discount': i['price']['discountPercentage'],
+            'store': 'GOG',
+            'link': ("https://www.gog.com" + i['url']),
+            'thumbnail': (i['image'] + "_product_tile_398_2x.jpg")
         }
         games_list.append(game_data)
-    #----------------------------------------------
+    # ----------------------------------------------
 
-    #STEAM API-------------------------------------
+    # STEAM API-------------------------------------
     for i in steam_games:
-        price1 = float(steam_games[i]['price'])/100
-        initial_price = float(steam_games[i]['initialprice'])/100
+        price1 = float(steam_games[i]['price']) / 100
+        initial_price = float(steam_games[i]['initialprice']) / 100
         discount = int(steam_games[i]['discount'])
 
         game_data = {
-            'appid' : steam_games[i]['appid'],
-            'title' : steam_games[i]['name'],
-            'price' : price1,
-            'initialprice' : initial_price,
-            'discount' : discount,
-            'store' : 'Steam',
-            'link' : ("https://store.steampowered.com/app/" + str(steam_games[i]['appid'])),
-            'thumbnail' : ('https://cdn.cloudflare.steamstatic.com/steam/apps/' + str(steam_games[i]['appid']) + '/header.jpg')
+            'appid': steam_games[i]['appid'],
+            'title': steam_games[i]['name'],
+            'price': price1,
+            'initialprice': initial_price,
+            'discount': discount,
+            'store': 'Steam',
+            'link': ("https://store.steampowered.com/app/" + str(steam_games[i]['appid'])),
+            'thumbnail': ('https://cdn.cloudflare.steamstatic.com/steam/apps/' + str(
+                steam_games[i]['appid']) + '/header.jpg')
 
         }
         games_list.append(game_data)
 
-
     if q:
-        #walmart API
+        # walmart API
         walmart_data = walmart_request(q)
         # best buy API
         bestbuy_data = bestbuy_request(q)
         # ebay api
-        #ebay_data = ebay_request(q)
-        #database request
+        # ebay_data = ebay_request(q)
+        # database request
         harper_data = harperdb_request(q)
 
+        games_list += harper_data
+        games_list += walmart_data
+        games_list += bestbuy_data
+        # games_list+=ebay_data
 
-        games_list+=harper_data
-        games_list+=walmart_data
-        games_list+=bestbuy_data
-        #games_list+=ebay_data
-
-    #----------------------------------------------
+    # ----------------------------------------------
     games_list.sort(key=itemgetter("price"))
 
-    #games_list = sorted(games_list, key = lambda i: i['price'])
-    #Implements Search Functionality
+    # games_list = sorted(games_list, key = lambda i: i['price'])
+    # Implements Search Functionality
     for i in games_list:
-        i['price']=format(i['price'],".2f")
-        i['initialprice']=format(i['initialprice'],".2f")
+        i['price'] = format(i['price'], ".2f")
+        i['initialprice'] = format(i['initialprice'], ".2f")
 
     if q:
         games_list = [games for games in games_list if q.lower() in games['title'].lower()]
@@ -458,22 +439,20 @@ def withoutebay():
     else:
         games_list
 
-
-    #apply filtering
-    print("plarform :",platform_filter)
-    if(platform_filter is None or platform_filter == 'Select Console'):
+    # apply filtering
+    print("plarform :", platform_filter)
+    if (platform_filter is None or platform_filter == 'Select Console'):
         print("there are not any platform filter applied")
-        #else if(platform_filter is not None or platform_filter != 'None' or platform_filter != 'none'):
+        # else if(platform_filter is not None or platform_filter != 'None' or platform_filter != 'none'):
     else:
         print("applying the platform filter")
         new_game_list = []
         for i in games_list:
             title_to_search = i['title'].lower()
-            #rint(title_to_search.find(platform_filter),"title :",title_to_search)
-            if(title_to_search.find(platform_filter)>=0):
-
-                #print(platform_filter,":",title_to_search)
+            # rint(title_to_search.find(platform_filter),"title :",title_to_search)
+            if (title_to_search.find(platform_filter) >= 0):
+                # print(platform_filter,":",title_to_search)
                 new_game_list.append(i)
 
-        return render_template('index1.html', games = new_game_list)
-    return render_template('index1.html', games = games_list)
+        return render_template('index1.html', games=new_game_list)
+    return render_template('index1.html', games=games_list)
