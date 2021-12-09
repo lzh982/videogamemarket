@@ -27,6 +27,7 @@ def index():
     preference = request.args.get('genre')
 
 
+
     # Steam API URL
     req = 'https://steamspy.com/api.php'
 
@@ -117,11 +118,11 @@ def index():
             'console': "PC"
         }
         if (preference is None or preference == "Select Genre"):
-            if(platform_filter == "PC"):
+            if(len(q)!=0):
                 title_to_search = game_data['title'].lower()
-                if (title_to_search.find(q) > 0):
+                if (title_to_search.find(q) >= 0):
                     games_list.append(game_data)
-            else :
+            else:
                 games_list.append(game_data)
 
     # ----------------------------------------------
@@ -148,12 +149,12 @@ def index():
             'console': "PC"
         }
         if (preference is None or preference == "Select Genre"):
-            if(platform_filter == "PC"):
+            if(len(q)!=0):
                 title_to_search = game_data['title'].lower()
-                if (title_to_search.find(q) > 0):
+                if (title_to_search.find(q) >= 0):
                     games_list.append(game_data)
-            else :
-                games_list.append(game_data)    # ----------------------------------------------
+            else:
+                games_list.append(game_data)
 
     # STEAM API-------------------------------------
     for i in steam_games:
@@ -177,14 +178,15 @@ def index():
             'console': "PC"
         }
         if (preference is None or preference == "Select Genre"):
-            if(platform_filter == "PC"):
+            if(len(q)!=0):
                 title_to_search = game_data['title'].lower()
-                if (title_to_search.find(q) > 0):
+                if (title_to_search.find(q) >= 0):
                     games_list.append(game_data)
-            else :
+            else:
                 games_list.append(game_data)
 
     if platform_filter == "PC":
+        print("returning pc result")
         return render_template('index1.html', games=games_list)
 
     if q and preference == "Select Genre":
