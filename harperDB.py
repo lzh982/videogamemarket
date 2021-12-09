@@ -52,7 +52,7 @@ def harperdb_request(query, platform, preference):
         if harper_query in i['title'].upper() or harper_query == i['title'].upper():
 #            print(query_console)
 #            print(i['seller_rating'])
-            if i['seller_rating'] >= 80 and i['reviews']>=10 and ((i['reviews'] * ((100 - i['good_reviews'])/100)) >= 5000):
+            if i['seller_rating'] >= 80: #and i['reviews']>=10 and ((i['reviews'] * ((100 - i['good_reviews'])/100)) >= 5000):
 #                print("inside if statement")
                 game_data_2 = {
                     'title' : i['title'],
