@@ -2,6 +2,7 @@ import requests
 import json
 
 
+####This is the function for ebay request
 def ebay_request(query):
     url = "https://api.ebay.com/buy/browse/v1/item_summary/search?q=" + query + "&category_ids=139973&limit=10&offset=10"
 
@@ -16,7 +17,6 @@ def ebay_request(query):
     ebay_item_summary = result['itemSummaries']
 
     for i in ebay_item_summary:
-        #print(i)
         if(float(i['seller']['feedbackPercentage'])<80):
             continue
         if(i['seller']['feedbackScore']<1500):
@@ -40,4 +40,3 @@ def ebay_request(query):
 
     return game_result
 
-print(ebay_request("zelda"))

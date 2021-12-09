@@ -181,47 +181,10 @@ def application(query,platform):
         games_list+=walmart_data
         games_list+=bestbuy_data
         games_list+=ebay_data
-#    else:
-#        #database request
-#        if platform_filter:
-#            harper_data = harperdb_request(q, platform_filter)
-#            games_list+=harper_data
-
-
-#harperDb
-#    if q:
-#        harper_data = harperdb_request(q)
-#        games_list+=harper_data
-
-#    db = harperdb.HarperDB(
-#        url="https://videogames-videomarket.harperdbcloud.com",
-#        username="video_game_market",
-#        password="video_game_market"
-#    )
-#    print('hello')
-#    if __name__ == "__main__":
-#        app.run(debug=True)
-        #print(db.describe_all())
-#        database_games = db.sql("select * from video_game.video_game_api_2")
-
-#        for i in database_games:
-#            print(i['title'])
-#            game_data_2 = {
-#                'title' : i['title'],
-#                'price' : i['price'],
-                #'initialprice' : 12,
-                #'discount' : 0,
-                #'store' : 'VGM',
-                #'link' : "google.com",
-#                'thumbnail' : i['image_url']
-
-#            }
-#            games_list.append(game_data_2)
 
     #----------------------------------------------
     games_list.sort(key=itemgetter("price"))
 
-    #games_list = sorted(games_list, key = lambda i: i['price'])
     #Implements Search Functionality
     for i in games_list:
         i['price']=format(i['price'],".2f")
@@ -234,35 +197,30 @@ def application(query,platform):
         games_list
 
 
-    #print(games_list)
     #apply filtering
-    #print("plarform :",platform_filter)
     if(platform_filter is None or platform_filter =="Select Console"):
         print("there are not any platform filter applied")
-        #else if(platform_filter is not None or platform_filter != 'None' or platform_filter != 'none'):
     else:
-        #print("applying the platform filter")
         new_game_list = []
 
         platform_filter_lower_case = platform_filter.lower()
         for i in games_list:
             title_to_search = i['title'].lower()
-            #rint(title_to_search.find(platform_filter),"title :",title_to_search)
             if(title_to_search.find(platform_filter_lower_case)>=0):
-                #print(i)
-                #print(platform_filter,":",title_to_search)
                 new_game_list.append(i)
 
         #database filter query
         harper_data = harperdb_request(q, platform_filter,preference)
         new_game_list+=harper_data
-        #print(harper_data)
         return new_game_list
     return games_list
 
 
 
 
+
+
+###Unit testing to testfor the application and the function
 if(application("mario","Select Console").__sizeof__()>0):
     print("whole application query successfully")
 

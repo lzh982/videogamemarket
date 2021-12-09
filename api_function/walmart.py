@@ -32,7 +32,6 @@ def walmart_request(input):
             continue
 
         game_dprice = i['primary_offer']['offer_price']
-        #game_dprice = game_dprice.replace('$','')
         game_dprice = float(game_dprice)
 
         if(game_dprice < 2):
@@ -54,4 +53,3 @@ def walmart_request(input):
     return walmart_result
 
 
-#print(walmart_query("zelda"))

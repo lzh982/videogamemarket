@@ -27,7 +27,6 @@ def index():
     preference = request.args.get('genre')
 
 
-
     # Steam API URL
     req = 'https://steamspy.com/api.php'
 
@@ -217,40 +216,10 @@ def index():
         harper_data = harperdb_request(q, platform_filter, preference)
         games_list += harper_data
 
-    # harperDb
-    #    if q:
-    #        harper_data = harperdb_request(q)
-    #        games_list+=harper_data
-
-    #    db = harperdb.HarperDB(
-    #        url="https://videogames-videomarket.harperdbcloud.com",
-    #        username="video_game_market",
-    #        password="video_game_market"
-    #    )
-    #    print('hello')
-    #    if __name__ == "__main__":
-    #        app.run(debug=True)
-    # print(db.describe_all())
-    #        database_games = db.sql("select * from video_game.video_game_api_2")
-
-    #        for i in database_games:
-    #            print(i['title'])
-    #            game_data_2 = {
-    #                'title' : i['title'],
-    #                'price' : i['price'],
-    # 'initialprice' : 12,
-    # 'discount' : 0,
-    # 'store' : 'VGM',
-    # 'link' : "google.com",
-    #                'thumbnail' : i['image_url']
-
-    #            }
-    #            games_list.append(game_data_2)
 
     # ----------------------------------------------
     games_list.sort(key=itemgetter("price"))
 
-    # games_list = sorted(games_list, key = lambda i: i['price'])
     # Implements Search Functionality
     for i in games_list:
         i['price'] = format(i['price'], ".2f")
@@ -262,32 +231,25 @@ def index():
     else:
         games_list
 
-    # print(games_list)
     # apply filtering
-    # print("plarform :",platform_filter)
-
     if (platform_filter is None or platform_filter == "Select Console"):
         print("there are not any platform filter applied")
         title_to_search = game_data['title'].lower()
         if (title_to_search.find(q) > 0):
             games_list.append(game_data)
     else:
-        # print("applying the platform filter")
+        print("applying the platform filter")
         new_game_list = []
 
         platform_filter_lower_case = platform_filter.lower()
         for i in games_list:
             title_to_search = i['title'].lower()
-            # rint(title_to_search.find(platform_filter),"title :",title_to_search)
             if (title_to_search.find(platform_filter_lower_case) >= 0):
-                # print(i)
-                # print(platform_filter,":",title_to_search)
                 new_game_list.append(i)
 
         # database filter query
         harper_data = harperdb_request(q, platform_filter, preference)
         new_game_list += harper_data
-        # print(harper_data)
         if (len(new_game_list) == 0):
             return render_template('no_result.html', games=new_game_list)
 
@@ -457,7 +419,6 @@ def withoutebay():
     # ----------------------------------------------
     games_list.sort(key=itemgetter("price"))
 
-    # games_list = sorted(games_list, key = lambda i: i['price'])
     # Implements Search Functionality
     for i in games_list:
         i['price'] = format(i['price'], ".2f")
@@ -473,15 +434,12 @@ def withoutebay():
     print("plarform :", platform_filter)
     if (platform_filter is None or platform_filter == 'Select Console'):
         print("there are not any platform filter applied")
-        # else if(platform_filter is not None or platform_filter != 'None' or platform_filter != 'none'):
     else:
         print("applying the platform filter")
         new_game_list = []
         for i in games_list:
             title_to_search = i['title'].lower()
-            # rint(title_to_search.find(platform_filter),"title :",title_to_search)
             if (title_to_search.find(platform_filter) >= 0):
-                # print(platform_filter,":",title_to_search)
                 new_game_list.append(i)
 
         return render_template('index1.html', games=new_game_list)
